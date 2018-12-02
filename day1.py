@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 from __future__ import print_function
+from shared import read_input
 
 INPUT_FILE_PATH = 'day1-input.txt'
-def read_input():
-    with open(INPUT_FILE_PATH) as f:
-        return f.readlines()
 
 
 def parse_delta(delta):
@@ -18,7 +16,7 @@ def apply_delta(curr, delta):
 def main_part1():
     freq = 0
 
-    deltas = read_input()
+    deltas = read_input(INPUT_FILE_PATH)
 
     for delta in deltas:
         freq = apply_delta(freq, parse_delta(delta))
@@ -30,7 +28,7 @@ def main_part2():
     freq = 0
     seen_freqs = {}
 
-    deltas = read_input()
+    deltas = read_input(INPUT_FILE_PATH)
     delta_idx = 0
     while True:
         delta = parse_delta(deltas[delta_idx])
