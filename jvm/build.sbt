@@ -3,6 +3,8 @@
 // ---------------
 name := "AdventOfCode"
 
+fork := true
+
 // -------------------
 // Dependency settings
 // ----------ß---------
