@@ -1,8 +1,6 @@
-package advent2018
+package advent.shared
 
 import java.io._
-
-import resource._
 
 object IO {
   def readFile(filePath: String): Seq[String] = {

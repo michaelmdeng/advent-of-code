@@ -1,9 +1,10 @@
-package advent2018
+package advent.y2018
 
-case class Vec2(x: Int, y: Int)
-case class Light(pos: Vec2, v: Vec2) {
+import advent.shared._
+
+case class Light(pos: Coord, v: Coord) {
   def transition(): Light = {
-    Light(Vec2(pos.x + v.x, pos.y + v.y), v)
+    Light(Coord(pos.x + v.x, pos.y + v.y), v)
   }
 }
 
@@ -11,9 +12,9 @@ object Day10 {
   def parse(line: String): Light = {
     val splits = line.replaceAll("\\s", "").split("<").flatMap(_.split(">"))
     val posStr = splits(1)
-    val pos = Vec2(posStr.split(",")(0).toInt, posStr.split(",")(1).toInt)
+    val pos = Coord(posStr.split(",")(0).toInt, posStr.split(",")(1).toInt)
     val vStr = splits(3)
-    val v = Vec2(vStr.split(",")(0).toInt, vStr.split(",")(1).toInt)
+    val v = Coord(vStr.split(",")(0).toInt, vStr.split(",")(1).toInt)
     Light(pos, v)
   }
 
@@ -21,7 +22,7 @@ object Day10 {
     points.map(_.transition())
   }
 
-  def boundBox(points: Seq[Vec2]): (Int, Int, Int, Int) = {
+  def boundBox(points: Seq[Coord]): (Int, Int, Int, Int) = {
     val minX = points.map(_.x).min
     val maxX = points.map(_.x).max
     val minY = points.map(_.y).min
@@ -29,7 +30,7 @@ object Day10 {
     (minX, maxX, minY, maxY)
   }
 
-  def render(points: Seq[Vec2]): Unit = {
+  def render(points: Seq[Coord]): Unit = {
     val (minX, maxX, minY, maxY) = boundBox(points)
     val xs = minX to maxX
     val ys = minY to maxY

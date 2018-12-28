@@ -1,7 +1,6 @@
-package advent2018
+package advent.y2018
 
-import java.io.File
-
+import advent.shared.IO
 import cats.data.State
 
 case class Node(childCount: Int,
@@ -33,8 +32,7 @@ case class Node(childCount: Int,
   }
 }
 
-object Node {
-
+object Day8 {
   def parseNodes(n: Int): State[Seq[Int], Seq[Node]] = {
     def parseData(n: Int): State[Seq[Int], Seq[Int]] =
       State[Seq[Int], Seq[Int]] { state =>

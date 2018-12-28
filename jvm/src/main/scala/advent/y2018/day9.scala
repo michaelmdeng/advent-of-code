@@ -1,13 +1,14 @@
-package advent2018
+package advent.y2018
 
+import advent.shared.IO
 import cats.data.State
 
-case class MarbleState(marbles: day9.CircularList[Long], currMarble: Int) {}
+case class MarbleState(marbles: CircularList[Long], currMarble: Int) {}
 
 object MarbleState {
   type Score = Long
 
-  def starting: MarbleState = MarbleState(day9.CircularList.starting(0L), 0)
+  def starting: MarbleState = MarbleState(CircularList.starting(0L), 0)
 
   def placeMarble: State[MarbleState, Score] =
     State(state => {
@@ -16,7 +17,7 @@ object MarbleState {
       val nextMarble = state.currMarble + 1
 
       if ((nextMarble % 23) != 0) {
-        val next = new day9.Node(nextMarble.toLong, null, null)
+        val next = new CircularList.Node(nextMarble.toLong, null, null)
         (MarbleState(state.marbles.shift(1).insert(next), nextMarble), 0)
       } else {
         val tmp = state.marbles.shift(-7)
@@ -60,17 +61,19 @@ object GameState {
       acc.flatMap(_ => takeTurn)
     })
   }
+}
 
+object Day9 {
   def main(args: Array[String]): Unit = {
     val numPlayers = 470
     val numMarbles1 = 72170
     val start =
       GameState(MarbleState.starting, PlayerState.starting(numPlayers))
-    val state1 = runGame(numMarbles1).runS(start).value
+    val state1 = GameState.runGame(numMarbles1).runS(start).value
     println(f"Result 1: ${state1.playerState.scores.max}")
 
     val numMarbles2 = numMarbles1 * 100
-    val state2 = runGame(numMarbles2).runS(start).value
+    val state2 = GameState.runGame(numMarbles2).runS(start).value
     println(f"Result 2: ${state2.playerState.scores.max}")
   }
 }
