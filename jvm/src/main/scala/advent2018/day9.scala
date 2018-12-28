@@ -13,10 +13,6 @@ object MarbleState {
     State(state => {
       if (state.currMarble % 10000 == 0) println(state.currMarble / 10000)
 
-      // val numPrint = state.currMarble + 1 - (2 * (state.currMarble / 23))
-      // val str = state.marbles.foldLeft(numPrint)("")((acc, data) => f"$acc $data")
-      // println(str)
-
       val nextMarble = state.currMarble + 1
 
       if ((nextMarble % 23) != 0) {
