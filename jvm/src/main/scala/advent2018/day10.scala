@@ -49,23 +49,29 @@ object Day10 {
       "/Users/michaeldeng/Documents/advent-of-code-2018/input/day10-input.txt")
     val lights = input.map(parse(_))
 
-    val maxIter = 15000
-    var minH = Int.MaxValue
-    var minIdx = -1
-    var minLights: Option[Seq[Light]] = None
-    (1 to maxIter).foldLeft(lights)((acc, idx) => {
-      val (minX, maxX, minY, maxY) = boundBox(acc.map(_.pos))
-      if ((maxX - minX) < minH) {
-        minIdx = idx
-        minH = maxX - minX
-        minLights = Some(acc)
-      }
+    /* We're assuming the points of light begin in far off points and converge
+     * to a small area to form a single small message.
+     * Let's find the smallest such area as we move the lights through time, and
+     * assume that smallest area corresponds to the moment where the message
+     * appears
+     */
+    val maxIter = 15000 // max number of steps to go for
 
-      transition(acc)
+    // track the smallest bounding box, when it occurs, and the light
+    // positions for it
+    val (endLights, _, minIdx, minLights) = (0 to maxIter).foldLeft(
+      (lights, Int.MaxValue, -1, Seq[Light]()))((acc, idx) => {
+      val currLights = acc._1
+      val (minX, maxX, minY, maxY) = boundBox(currLights.map(_.pos))
+      val minBound = Math.min(maxX - minX, acc._2)
+      val minIdx = if ((maxX - minX) < acc._2) idx else acc._3
+      val minLights = if ((maxX - minX) < acc._2) currLights else acc._4
+
+      (transition(currLights), minBound, minIdx, minLights)
     })
 
-    println("Result 1")
-    render(minLights.get.map(_.pos))
+    println("Result 1:")
+    render(minLights.map(_.pos))
     println(f"Result 2: $minIdx")
   }
 }
