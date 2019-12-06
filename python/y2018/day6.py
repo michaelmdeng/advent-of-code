@@ -14,7 +14,6 @@ def dist(coord1, coord2):
     return abs(coord1[0] - coord2[0]) + abs(coord1[1] - coord2[1])
 
 
-
 def grid(coords, width):
     def get_points(min_x, max_x, min_y, max_y):
         xs = range(min_x, max_x + 1)
@@ -54,6 +53,7 @@ def areas(coords, width):
 def total_dist(coord, coords):
     return sum([dist(coord, other_coord) for other_coord in coords])
 
+
 def min_area(coords):
     points = grid(coords, 0)
 
@@ -73,6 +73,7 @@ def main_1():
             a[key] = a1[key]
 
     print("Result 1: " + str(max(a.values())))
+
 
 def main_2():
     lines = shared.read_input('day6-input.txt')
