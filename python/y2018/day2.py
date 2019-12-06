@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
+from unittest import TestCase
+
 from shared import read_input
 
 
@@ -60,6 +60,12 @@ def main_2():
                 print(common_string(curr_id, rest_id))
 
 
-if __name__ == '__main__':
-    main_1()
-    main_2()
+class Day2Tests(TestCase):
+    def setUp(self):
+        pass
+
+    def test_part_1(self):
+        main_1()
+
+    def test_part_2(self):
+        main_2()

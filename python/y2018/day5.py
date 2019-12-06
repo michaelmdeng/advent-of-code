@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
+from unittest import skip, TestCase
+
 from shared import read_input
 
 INPUT_FILE_PATH = 'day5-input.txt'
@@ -55,5 +55,10 @@ def main():
     print('Part 2: ' + str(max(lens)))
 
 
-if __name__ == '__main__':
-    main()
+class Day5Tests(TestCase):
+    def setUp(self):
+        pass
+
+    @skip("Long running test.")
+    def test(self):
+        main()

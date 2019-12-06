@@ -1,7 +1,7 @@
-#!/usr/bin/env python
-from __future__ import print_function
-from shared import read_input
 import re
+from unittest import TestCase
+
+from shared import read_input
 
 
 INPUT_FILE_PATH = 'day3-input.txt'
@@ -81,6 +81,12 @@ def main_2():
             print(claims[idx][0])
 
 
-if __name__ == '__main__':
-    main_1()
-    main_2()
+class Day3Tests(TestCase):
+    def setUp(self):
+        pass
+
+    def test_part_1(self):
+        main_1()
+
+    def test_part_2(self):
+        main_2()

@@ -1,7 +1,7 @@
-#!/usr/bin/env python
-from __future__ import print_function
-import shared
 import re
+from unittest import TestCase
+
+import shared
 
 
 def parse_coord(line):
@@ -61,7 +61,7 @@ def min_area(coords):
     return len([1 for dist in dists if dist < 10000])
 
 
-def main1():
+def main_1():
     lines = shared.read_input('day6-input.txt')
     coords = [parse_coord(line) for line in lines]
 
@@ -74,7 +74,7 @@ def main1():
 
     print("Result 1: " + str(max(a.values())))
 
-def main2():
+def main_2():
     lines = shared.read_input('day6-input.txt')
     coords = [parse_coord(line) for line in lines]
 
@@ -82,6 +82,12 @@ def main2():
     print("Result 2: " + str(area))
 
 
-if __name__ == '__main__':
-    main1()
-    main2()
+class Day6Tests(TestCase):
+    def setUp(self):
+        pass
+
+    def test_part_1(self):
+        main_1()
+
+    def test_part_2(self):
+        main_2()

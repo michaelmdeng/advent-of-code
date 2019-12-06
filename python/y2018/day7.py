@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
+from unittest import TestCase
+
 import shared
 
 def parse_steps(line):
@@ -139,17 +139,25 @@ def process_time(adj, rev_adj, nodes, num_workers):
             break
     print(time)
 
-def main():
+def main_1():
     lines = shared.read_input('day7-input.txt')
 
     steps = adjacency([parse_steps(line) for line in lines])
     print(''.join(steps))
 
-def main2():
+def main_2():
     lines = shared.read_input('day7-input.txt')
 
     (adj, rev_adj, nodes) = build_adjacency([parse_steps(line) for line in lines])
     process_time(adj, rev_adj, nodes, num_workers=5)
 
-if __name__ == '__main__':
-    main2()
+
+class Day7Tests(TestCase):
+    def setUp(self):
+        pass
+
+    def test_part_1(self):
+        main_1()
+
+    def test_part_2(self):
+        main_2()

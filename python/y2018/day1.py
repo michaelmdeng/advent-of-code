@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
+from unittest import TestCase
+
 from shared import read_input
 
 INPUT_FILE_PATH = 'day1-input.txt'
@@ -47,6 +47,12 @@ def main_part2():
     print("Part 2 result: " + str(freq))
 
 
-if __name__ == '__main__':
-    main_part1()
-    main_part2()
+class Day1Tests(TestCase):
+    def setUp(self):
+        pass
+
+    def test_part_1(self):
+        main_part1()
+
+    def test_part_2(self):
+        main_part2()

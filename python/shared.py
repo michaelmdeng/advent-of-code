@@ -7,4 +7,4 @@ def read_input(file_name):
         return f.readlines()
 
 def min_idx(l):
-    return min(xrange(len(l)), key=l.__getitem__)
+    return min(range(len(l)), key=l.__getitem__)

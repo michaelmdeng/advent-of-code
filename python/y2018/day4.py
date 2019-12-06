@@ -1,8 +1,8 @@
-#!/usr/bin/env python
-from __future__ import print_function
-from shared import read_input
 import operator
 import re
+from unittest import TestCase
+
+from shared import read_input
 
 INPUT_FILE_PATH = 'day4-input.txt'
 
@@ -55,17 +55,21 @@ def main():
 
                     guard_times[curr_id][minute] += 1
 
-    max_id = max(guard_mins.iteritems(), key=operator.itemgetter(1))[0]
-    max_min = max(guard_times[max_id].iteritems(),
+    max_id = max(guard_mins.items(), key=operator.itemgetter(1))[0]
+    max_min = max(guard_times[max_id].items(),
                   key=operator.itemgetter(1))[0]
     print("Part 1: " + str(max_id * max_min))
 
-    max_id_min = [(curr_id,) + max(guard_times[curr_id].iteritems(),
+    max_id_min = [(curr_id,) + max(guard_times[curr_id].items(),
                                    key=operator.itemgetter(1)) for curr_id in guard_times.keys()]
     max_id = max(max_id_min, key=operator.itemgetter(2))[0]
     max_min = max(max_id_min, key=operator.itemgetter(2))[1]
     print("Part 2: " + str(max_id * max_min))
 
 
-if __name__ == '__main__':
-    main()
+class Day4Tests(TestCase):
+    def setUp(self):
+        pass
+
+    def test(self):
+        main()
