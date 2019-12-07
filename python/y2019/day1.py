@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from shared import AdventDay, read_input
+from shared import AdventDay
 
 class Day1(AdventDay):
     @staticmethod
@@ -44,7 +44,7 @@ class Day1Tests(TestCase):
     def test_part_1(self):
         self.instance.part_1()
 
-    def test_part_1_example(self):
+    def test_part_2_example(self):
         assert Day1.total_fuel(14) == 2
         assert Day1.total_fuel(1969) == 966
         assert Day1.total_fuel(100756) == 50346
