@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from shared import AdventDay
 
+
 class Day1(AdventDay):
     @staticmethod
     def fuel(mass):
@@ -24,7 +25,6 @@ class Day1(AdventDay):
     def part_1(self):
         out = sum([Day1.fuel(mass) for mass in self.input_data])
         print(out)
-
 
     def part_2(self):
         out = sum([Day1.total_fuel(mass) for mass in self.input_data])
