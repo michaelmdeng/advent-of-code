@@ -1,3 +1,3 @@
-# Advent of Code 2018
+# Advent of Code
 
-Code files for 2018 Advent of Code challenge.
+Code files for Advent of Code challenge.

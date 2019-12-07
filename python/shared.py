@@ -10,3 +10,17 @@ def read_input(file_name):
 
 def min_idx(l):
     return min(range(len(l)), key=l.__getitem__)
+
+
+class AdventDay:
+    def __init__(self, year, day):
+        self.year = year
+        self.day = day
+
+    @property
+    def input_file(self):
+        return f'{self.year}/day{self.day}.txt'
+
+    @property
+    def input_data(self):
+        return read_input(self.input_file)
