@@ -1,7 +1,7 @@
 from enum import Enum
 from unittest import TestCase
 
-from shared import AdventDay
+from shared import AdventDay, AdventDayRunner
 
 
 class Day2(AdventDay):
@@ -73,9 +73,7 @@ class Day2(AdventDay):
         prog[2] = 2
 
         out_prog = Day2.process_program(prog)
-        out = out_prog[0]
-
-        print(out)
+        return out_prog[0]
 
     def part_2(self):
         for noun in range(0, 100):
@@ -91,16 +89,13 @@ class Day2(AdventDay):
                     continue
 
                 if out_prog[0] == 19690720:
-                    out = 100 * noun + verb
-                    print(out)
-                    return
+                    return 100 * noun + verb
 
         raise Exception('Could not find combination.')
 
 
-class Day2Tests(TestCase):
-    def setUp(self):
-        self.instance = Day2()
+class Day2Tests(AdventDayRunner, TestCase):
+    instance_cls = Day2
 
     def test_part_1_example(self):
         assert Day2.process_program([1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50]) == \
@@ -112,9 +107,3 @@ class Day2Tests(TestCase):
             2, 4, 4, 5, 99, 9801]
         assert Day2.process_program([1, 1, 1, 4, 99, 5, 6, 0, 99]) == \
             [30, 1, 1, 4, 2, 5, 6, 0, 99]
-
-    def test_part_1(self):
-        self.instance.part_1()
-
-    def test_part_2(self):
-        self.instance.part_2()

@@ -3,7 +3,7 @@ from enum import Enum
 from functools import reduce
 from unittest import TestCase
 
-from shared import AdventDay
+from shared import AdventDay, AdventDayRunner
 
 
 class Day3(AdventDay):
@@ -159,7 +159,7 @@ class Day3(AdventDay):
         segments1 = Day3.segments(steps1)
         segments2 = Day3.segments(steps2)
 
-        print(Day3.min_distance(segments1, segments2))
+        return Day3.min_distance(segments1, segments2)
 
     def part_2(self):
         paths = self.input_data
@@ -169,12 +169,11 @@ class Day3(AdventDay):
         segments1 = Day3.segments(steps1)
         segments2 = Day3.segments(steps2)
 
-        print(Day3.min_travel(segments1, segments2))
+        return Day3.min_travel(segments1, segments2)
 
 
-class Day3Tests(TestCase):
-    def setUp(self):
-        self.instance = Day3()
+class Day3Tests(AdventDayRunner, TestCase):
+    instance_cls = Day3
 
     def test_part_1_example(self):
         example_steps1 = [
@@ -199,9 +198,6 @@ class Day3Tests(TestCase):
 
             assert Day3.min_distance(segments1, segments2) == distance
 
-    def test_part_1(self):
-        self.instance.part_1()
-
     def test_part_2_example(self):
         example_steps1 = [
             'R8,U5,L5,D3',
@@ -224,6 +220,3 @@ class Day3Tests(TestCase):
             segments2 = Day3.segments(steps2)
 
             assert Day3.min_travel(segments1, segments2) == travel
-
-    def test_part_2(self):
-        self.instance.part_2()

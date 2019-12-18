@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from shared import AdventDay
+from shared import AdventDay, AdventDayRunner
 
 
 class Day1(AdventDay):
@@ -23,17 +23,14 @@ class Day1(AdventDay):
         AdventDay.__init__(self, 2019, 1)
 
     def part_1(self):
-        out = sum([Day1.fuel(mass) for mass in self.input_data])
-        print(out)
+        return sum([Day1.fuel(mass) for mass in self.input_data])
 
     def part_2(self):
-        out = sum([Day1.total_fuel(mass) for mass in self.input_data])
-        print(out)
+        return sum([Day1.total_fuel(mass) for mass in self.input_data])
 
 
-class Day1Tests(TestCase):
-    def setUp(self):
-        self.instance = Day1()
+class Day1Tests(AdventDayRunner, TestCase):
+    instance_cls = Day1
 
     def test_part_1_example(self):
         assert Day1.fuel(12) == 2
@@ -41,13 +38,7 @@ class Day1Tests(TestCase):
         assert Day1.fuel(1969) == 654
         assert Day1.fuel(100756) == 33583
 
-    def test_part_1(self):
-        self.instance.part_1()
-
     def test_part_2_example(self):
         assert Day1.total_fuel(14) == 2
         assert Day1.total_fuel(1969) == 966
         assert Day1.total_fuel(100756) == 50346
-
-    def test_part_2(self):
-        self.instance.part_2()

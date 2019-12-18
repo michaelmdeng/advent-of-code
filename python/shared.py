@@ -1,4 +1,5 @@
 import os
+from unittest import TestCase
 
 
 def read_input(file_name):
@@ -24,3 +25,16 @@ class AdventDay:
     @property
     def input_data(self):
         return read_input(self.input_file)
+
+
+class AdventDayRunner:
+    instance_cls = None
+
+    def setUp(self):
+        self.instance = self.__class__.instance_cls()
+
+    def test_part_1(self):
+        print(f'{self.__class__.instance_cls.__name__} Part1 Result: {self.instance.part_1()}')
+
+    def test_part_2(self):
+        print(f'{self.__class__.instance_cls.__name__} Part2 Result: {self.instance.part_2()}')
