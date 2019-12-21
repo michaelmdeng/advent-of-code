@@ -6,15 +6,23 @@ homepage:            https://github.com/michaelmdeng/advent-of-code
 license:             BSD3
 license-file:        LICENSE
 author:              Author name here
-maintainer:          example@example.com
+maintainer:          miden@microsoft.com
 copyright:           2019 Michael Deng
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
 extra-source-files:  README.md
+data-files:          data/2019/*.txt,
+		     data/*.txt
+other-modules:       Path_advent
+                     Y2019.Day1
+                     Y2019.Day2
 
 executable advent
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5
+  build-depends:       base >= 4.7 && < 5,
+                       ilist,
+                       mtl,
+                       split

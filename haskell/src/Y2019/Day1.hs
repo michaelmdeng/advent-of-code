@@ -1,7 +1,9 @@
+module Y2019.Day1 where
+
 import Shared
 
 fuel :: Integer -> Integer
-fuel mass = max 0 ((quot mass 3) - 2)
+fuel mass = max 0 ((mass `div` 3) - 2)
 
 totalFuel :: [String] -> Integer
 totalFuel masses =
@@ -23,16 +25,8 @@ totalRecursiveFuel masses =
         let mass = read massStr :: Integer
         return (recursiveFuel mass))
 
-part1 = do
-  lines <- Shared.readAll "../input/2019/day1.txt"
-  return (show (totalFuel lines))
+part1 lines = show (totalFuel lines)
 
-part2 = do
-  lines <- Shared.readAll "../input/2019/day1.txt"
-  return (show (totalRecursiveFuel lines))
+part2 lines = show (totalRecursiveFuel lines)
 
-main = do
-  res1 <- part1
-  putStrLn (res1)
-  res2 <- part2
-  putStrLn (res2)
+main = runAdventCalendarPure (2019, 1) part1 part2

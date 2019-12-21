@@ -1,6 +1,9 @@
+module Y2019.Day2 where
+
 import Shared
 
 import Control.Monad.State.Lazy
+import Data.List.Index
 import Data.List.Split
 import GHC.Arr
 import GHC.Base
@@ -8,17 +11,11 @@ import GHC.Enum
 import GHC.Read
 import GHC.Show
 
-set :: Int -> Int -> [Int] -> [Int]
-set x idx list =
-  if idx < 0 || idx >= length list
-    then list
-    else take idx list ++ [x] ++ drop (idx + 1) list
-
 data Operation
   = Add
   | Mult
   | Halt
-  deriving (Eq, Ord, Ix, Enum, Read, Show)
+  deriving (Eq, Enum, Read, Show)
 
 fromOpcode :: Int -> Operation
 fromOpcode code =
@@ -43,7 +40,7 @@ processAdd = do
   let operand2Idx = instructions !! (position + 2)
   let operand2 = instructions !! operand2Idx
   let updatePos = instructions !! (position + 3)
-  put (set (operand1 + operand2) updatePos instructions, position + 4)
+  put (setAt updatePos (operand1 + operand2) instructions, position + 4)
   return ()
 
 processMult :: State ProgramState ()
@@ -55,7 +52,7 @@ processMult = do
   let operand2Idx = instructions !! (position + 2)
   let operand2 = instructions !! operand2Idx
   let updatePos = instructions !! (position + 3)
-  put (set (operand1 * operand2) updatePos instructions, position + 4)
+  put (setAt updatePos (operand1 * operand2) instructions, position + 4)
   return ()
 
 processHalt :: State ProgramState ()
@@ -82,31 +79,24 @@ processAll = do
     then return ((fst state) !! 0)
     else processAll
 
+formatInput :: [String] -> [Int]
+formatInput lines = map (\s -> read s) (splitOn "," (head lines))
+
 setInput :: Int -> Int -> [Int] -> [Int]
-setInput noun verb program = set verb 2 (set noun 1 program)
+setInput noun verb program = setAt 2 verb (setAt 1 noun program)
 
-part1 = do
-  lines <- Shared.readAll "../input/2019/day2.txt"
-  let program = setInput 12 2 (map (\s -> read s) (splitOn "," (head lines)))
-  return (evalState processAll (program, 0))
+part1 lines = evalState processAll ((setInput 12 2 (formatInput lines)), 0)
 
-part2 = do
-  lines <- Shared.readAll "../input/2019/day2.txt"
-  let program = map (\s -> read s :: Int) (splitOn "," (head lines))
-  let outputs = do
-        noun <- [1 .. 100]
-        verb <- [1 .. 100]
-        let a = evalState processAll ((setInput noun verb program), 0)
-        return (noun, verb, a)
-  let output =
-        head
-          (map
-             (\(n, v, out) -> 100 * n + v)
-             (filter (\(n, v, out) -> out == 19690720) outputs))
-  return output
+processPart2 lines = do
+  noun <- [1 .. 100]
+  verb <- [1 .. 100]
+  let a = evalState processAll ((setInput noun verb (formatInput lines)), 0)
+  return (noun, verb, a)
 
-main = do
-  res1 <- part1
-  putStrLn (show res1)
-  res2 <- part2
-  putStrLn (show res2)
+part2 lines =
+  head
+    (map
+       (\(n, v, out) -> 100 * n + v)
+       (filter (\(n, v, out) -> out == 19690720) (processPart2 lines)))
+
+main = runAdventCalendarPure (2019, 2) part1 part2
