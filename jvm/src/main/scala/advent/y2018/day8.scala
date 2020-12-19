@@ -1,6 +1,6 @@
 package advent.y2018
 
-import advent.shared.IO
+import advent.shared.IOHelper
 import cats.data.State
 
 case class Node(
@@ -60,7 +60,7 @@ object Day8 {
   }
 
   def main(args: Array[String]): Unit = {
-    val input = IO.readFile(
+    val input = IOHelper.readFile(
       "/Users/michaeldeng/Documents/advent-of-code-2018/input/day8-input.txt"
     )
     val data = input(0).split(" ").map(_.toInt)

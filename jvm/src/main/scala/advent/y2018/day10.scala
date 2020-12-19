@@ -46,7 +46,7 @@ object Day10 {
   }
 
   def main(args: Array[String]): Unit = {
-    val input = IO.readFile(
+    val input = IOHelper.readFile(
       "/Users/michaeldeng/Documents/advent-of-code-2018/input/day10-input.txt"
     )
     val lights = input.map(parse(_))

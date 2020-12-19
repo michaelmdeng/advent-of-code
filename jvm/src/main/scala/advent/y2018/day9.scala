@@ -1,6 +1,6 @@
 package advent.y2018
 
-import advent.shared.IO
+import advent.shared.IOHelper
 import cats.data.State
 
 case class MarbleState(marbles: CircularList[Long], currMarble: Int) {}

@@ -2,7 +2,7 @@ package advent.shared
 
 import java.io._
 
-object IO {
+object IOHelper {
   def readFile(filePath: String): Seq[String] = {
     var acc = Seq[String]()
     val fis = new FileInputStream(filePath)
