@@ -13,9 +13,13 @@ trait DayInput {
     f"../input/${YEAR}/day-${DAY}-input.txt"
   }
 
-  def readInput(): IO[Seq[String]] = IO {
+  def testFilePath(): String = {
+    f"../input/${YEAR}/day-${DAY}-input-test.txt"
+  }
+
+  def readFile(file: String): IO[Seq[String]] = IO {
     var acc = Seq[String]()
-    val fis = new FileInputStream(filePath())
+    val fis = new FileInputStream(file)
     val br = new BufferedReader(new InputStreamReader(fis));
     while (br.ready()) {
       acc = acc :+ br.readLine()
@@ -23,4 +27,8 @@ trait DayInput {
 
     acc
   }
+
+  def readInput(): IO[Seq[String]] = readFile(filePath())
+
+  def readTestInput(): IO[Seq[String]] = readFile(testFilePath())
 }
