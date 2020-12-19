@@ -1,10 +1,8 @@
 package advent.y2020
 
-import cats.effect.IO
+import advent.shared.SafeDayRunner
 
-import advent.shared.DayRunner
-
-object Day6 extends DayRunner[Int, Int] {
+object Day6 extends SafeDayRunner[String, Int, Int] {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 6
 
@@ -22,15 +20,19 @@ object Day6 extends DayRunner[Int, Int] {
 
   private def parseQuestions(line: String): Set[Char] = line.toSet
 
-  def runPart1(lines: Seq[String]): IO[Int] = IO {
-    parseGroups(lines).map(group => {
-      group.map(parseQuestions(_)).reduce(_.union(_)).size
-    }).reduce(_ + _)
+  def safeRunPart1(lines: Seq[String]): Int = {
+    parseGroups(lines)
+      .map(group => {
+        group.map(parseQuestions(_)).reduce(_.union(_)).size
+      })
+      .reduce(_ + _)
   }
 
-  def runPart2(lines: Seq[String]): IO[Int] = IO {
-    parseGroups(lines).map(group => {
-      group.map(parseQuestions(_)).reduce(_ & _).size
-    }).reduce(_ + _)
+  def safeRunPart2(lines: Seq[String]): Int = {
+    parseGroups(lines)
+      .map(group => {
+        group.map(parseQuestions(_)).reduce(_ & _).size
+      })
+      .reduce(_ + _)
   }
 }
