@@ -24,10 +24,14 @@ object Day11 {
     })
   }
 
-  def maxPower(grid: Seq[Seq[FuelCell]],
-               cellSize: Int = 3): (FuelCell.Power, Coord) = {
-    def gridPower(grid: Seq[Seq[FuelCell]],
-                  cellSize: Int): Seq[Seq[FuelCell.Power]] = {
+  def maxPower(
+    grid: Seq[Seq[FuelCell]],
+    cellSize: Int = 3
+  ): (FuelCell.Power, Coord) = {
+    def gridPower(
+      grid: Seq[Seq[FuelCell]],
+      cellSize: Int
+    ): Seq[Seq[FuelCell.Power]] = {
       (0 to grid.size + 1 - cellSize).map(x => {
         (0 to grid(0).size + 1 - cellSize).map(y => {
           val cell = grid.slice(x, x + cellSize).map(_.slice(y, y + cellSize))

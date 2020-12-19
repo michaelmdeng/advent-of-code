@@ -47,7 +47,8 @@ object Day10 {
 
   def main(args: Array[String]): Unit = {
     val input = IO.readFile(
-      "/Users/michaeldeng/Documents/advent-of-code-2018/input/day10-input.txt")
+      "/Users/michaeldeng/Documents/advent-of-code-2018/input/day10-input.txt"
+    )
     val lights = input.map(parse(_))
 
     /* We're assuming the points of light begin in far off points and converge
@@ -60,16 +61,18 @@ object Day10 {
 
     // track the smallest bounding box, when it occurs, and the light
     // positions for it
-    val (endLights, _, minIdx, minLights) = (0 to maxIter).foldLeft(
-      (lights, Int.MaxValue, -1, Seq[Light]()))((acc, idx) => {
-      val currLights = acc._1
-      val (minX, maxX, minY, maxY) = boundBox(currLights.map(_.pos))
-      val minBound = Math.min(maxX - minX, acc._2)
-      val minIdx = if ((maxX - minX) < acc._2) idx else acc._3
-      val minLights = if ((maxX - minX) < acc._2) currLights else acc._4
+    val (endLights, _, minIdx, minLights) =
+      (0 to maxIter).foldLeft((lights, Int.MaxValue, -1, Seq[Light]()))(
+        (acc, idx) => {
+          val currLights = acc._1
+          val (minX, maxX, minY, maxY) = boundBox(currLights.map(_.pos))
+          val minBound = Math.min(maxX - minX, acc._2)
+          val minIdx = if ((maxX - minX) < acc._2) idx else acc._3
+          val minLights = if ((maxX - minX) < acc._2) currLights else acc._4
 
-      (transition(currLights), minBound, minIdx, minLights)
-    })
+          (transition(currLights), minBound, minIdx, minLights)
+        }
+      )
 
     println("Result 1:")
     render(minLights.map(_.pos))

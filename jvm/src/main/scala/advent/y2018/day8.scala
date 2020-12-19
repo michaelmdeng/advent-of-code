@@ -3,10 +3,12 @@ package advent.y2018
 import advent.shared.IO
 import cats.data.State
 
-case class Node(childCount: Int,
-                metadataCount: Int,
-                children: Seq[Node],
-                metadata: Seq[Int]) {
+case class Node(
+  childCount: Int,
+  metadataCount: Int,
+  children: Seq[Node],
+  metadata: Seq[Int]
+) {
   def foldMetadata[B](z: Int)(op: (Int, Int) ⇒ Int): Int = {
     val start = this.metadata.fold(z)(op(_, _))
 
@@ -59,7 +61,8 @@ object Day8 {
 
   def main(args: Array[String]): Unit = {
     val input = IO.readFile(
-      "/Users/michaeldeng/Documents/advent-of-code-2018/input/day8-input.txt")
+      "/Users/michaeldeng/Documents/advent-of-code-2018/input/day8-input.txt"
+    )
     val data = input(0).split(" ").map(_.toInt)
 
     val node = parseNodes(1).runA(data).value(0)
