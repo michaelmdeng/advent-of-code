@@ -107,8 +107,8 @@ object Day11 extends SafeDayRunner[String, Int, Int] {
     direction: (Int, Int),
     rowSize: Int,
     colSize: Int
-  ): Stream[(Int, Int)] = {
-    Stream
+  ): LazyList[(Int, Int)] = {
+    LazyList
       .continually(direction)
       .scanLeft((0, 0)) {
         case ((accRow, accCol), (row, col)) =>

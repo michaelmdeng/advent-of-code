@@ -26,7 +26,7 @@ object Day9 extends SafeDayRunner[String, Long, Long] {
   def safeRunPart2(lines: Seq[String]): Long = {
     val invalidNumber = safeRunPart1(lines)
 
-    Stream(lines.map(_.toLong): _*).tails
+    LazyList(lines.map(_.toLong): _*).tails
       .map(tail => {
         // Stream partial sums until we've surpassed the SECRET_NUMBER
         // This we way don't have to calculate unecessary sums

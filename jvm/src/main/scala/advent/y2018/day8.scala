@@ -9,7 +9,7 @@ case class Node(
   children: Seq[Node],
   metadata: Seq[Int]
 ) {
-  def foldMetadata[B](z: Int)(op: (Int, Int) ⇒ Int): Int = {
+  def foldMetadata[B](z: Int)(op: (Int, Int) => Int): Int = {
     val start = this.metadata.fold(z)(op(_, _))
 
     children.foldLeft(start)((acc, child) => {
@@ -65,7 +65,7 @@ object Day8 {
     )
     val data = input(0).split(" ").map(_.toInt)
 
-    val node = parseNodes(1).runA(data).value(0)
+    val node = parseNodes(1).runA(data.toIndexedSeq).value(0)
     val sum = node.foldMetadata(0)(_ + _)
     println(f"Result 1: $sum")
     println(f"Result 2: ${node.getValue()}")
