@@ -1,11 +1,10 @@
 package advent.y2020
 
-import cats.effect.IO
 import scala.util.matching.Regex
 
-import advent.shared.DayRunner
+import advent.shared.SafeDayRunner
 
-object Day4 extends DayRunner[Int, Int] {
+object Day4 extends SafeDayRunner[String, Int, Int] {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 4
 
@@ -49,7 +48,7 @@ object Day4 extends DayRunner[Int, Int] {
   )
 
   private def parsePassports(lines: Seq[String]): Seq[Seq[String]] = {
-    lines.foldLeft[Seq[Seq[String]]](Seq[Seq[String]]())((acc, elem) => {
+    lines.foldLeft(Seq[Seq[String]]())((acc, elem) => {
       if (acc.isEmpty) {
         Seq(Seq(elem))
       } else if (elem.nonEmpty) {
@@ -73,7 +72,7 @@ object Day4 extends DayRunner[Int, Int] {
       })
   }
 
-  def runPart1(lines: Seq[String]): IO[Int] = IO {
+  def safeRunPart1(lines: Seq[String]): Int = {
     parsePassports(lines)
       .map(passport => {
         parseFields(passport)
@@ -86,7 +85,7 @@ object Day4 extends DayRunner[Int, Int] {
       .length
   }
 
-  def runPart2(lines: Seq[String]): IO[Int] = IO {
+  def safeRunPart2(lines: Seq[String]): Int = {
     parsePassports(lines)
       .map(passport => {
         parseFields(passport)

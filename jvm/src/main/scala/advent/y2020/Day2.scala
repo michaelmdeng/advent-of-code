@@ -1,17 +1,16 @@
 package advent.y2020
 
-import cats.effect.IO
 import scala.util.matching.Regex
 
-import advent.shared.DayRunner
+import advent.shared.SafeDayRunner
 
-object Day2 extends DayRunner[Int, Int] {
+object Day2 extends SafeDayRunner[String, Int, Int] {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 2
 
   private val PATTERN: Regex = new Regex("(\\d+)-(\\d+)\\s([a-z]):\\s([a-z]+)")
 
-  def runPart1(lines: Seq[String]): IO[Int] = IO {
+  def safeRunPart1(lines: Seq[String]): Int = {
     lines
       .filter(line => {
         val res = PATTERN.findFirstMatchIn(line).get
@@ -27,7 +26,7 @@ object Day2 extends DayRunner[Int, Int] {
       .length
   }
 
-  def runPart2(lines: Seq[String]): IO[Int] = IO {
+  def safeRunPart2(lines: Seq[String]): Int = {
     lines
       .filter(line => {
         val res = PATTERN.findFirstMatchIn(line).get

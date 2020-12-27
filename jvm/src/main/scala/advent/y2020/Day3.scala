@@ -1,10 +1,8 @@
 package advent.y2020
 
-import cats.effect.IO
+import advent.shared.SafeDayRunner
 
-import advent.shared.DayRunner
-
-object Day3 extends DayRunner[Int, Long] {
+object Day3 extends SafeDayRunner[String, Int, Long] {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 3
 
@@ -27,11 +25,11 @@ object Day3 extends DayRunner[Int, Long] {
       .reduce(_ + _)
   }
 
-  def runPart1(lines: Seq[String]): IO[Int] = IO {
+  def safeRunPart1(lines: Seq[String]): Int = {
     countTrees(lines, X_SLOPE_PT_1, Y_SLOPE_PT_1)
   }
 
-  def runPart2(lines: Seq[String]): IO[Long] = IO {
+  def safeRunPart2(lines: Seq[String]): Long = {
     List((1, 1), (3, 1), (5, 1), (7, 1), (1, 2))
       .map {
         case (xSlope, ySlope) => countTrees(lines, xSlope, ySlope)
