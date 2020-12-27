@@ -25,5 +25,5 @@ bounds.
 # Part 2
 
 Rather than check the count of occurrences of the specified letter, we instead
-check the specified indices of our password (remembering to offset indices by
-1) to see if either match the specified letter.
+check the specified indices of our password (remembering to offset indices by 1)
+to see if either match the specified letter.

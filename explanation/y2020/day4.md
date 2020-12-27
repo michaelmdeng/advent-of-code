@@ -26,7 +26,11 @@ starting the input with an empty line to denote a new passport.
 
 If the current line is non-empty (the `else if (elem.nonEmpty)` clause of the
 fold), we have found another line for our current passport. We append this line
-to the current passport (ie the last element of our accumulator).
+to the current passport (ie the last element of our accumulator). In terms of
+immutable data structures, we construct a new accumulator that consists of all
+elements of the previous accumulator except the last (`acc.init`), with a new
+element appended that consists of the last element of the previous accumulator
+with the new line appended to it (`acc.last :+ elem`).
 
 If the current line is empty (the `else` clause of the fold), we have reached
 the end of the given passport and should start a new one - we do this by
