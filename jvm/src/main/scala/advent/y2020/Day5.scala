@@ -1,11 +1,10 @@
 package advent.y2020
 
-import cats.effect.IO
 import scala.util.matching.Regex
 
-import advent.shared.DayRunner
+import advent.shared.SafeDayRunner
 
-object Day5 extends DayRunner[Int, Int] {
+object Day5 extends SafeDayRunner[String, Int, Int] {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 5
 
@@ -13,7 +12,17 @@ object Day5 extends DayRunner[Int, Int] {
   private val MAX_ROW: Int = 127
   private val MAX_COL: Int = 7
 
-  private def getSeat(line: String): (Int, Int) = {
+  private def parseBinary(numberString: String): Int = {
+    numberString.reverse.zipWithIndex.foldLeft(0) {
+      case (acc, (number, idx)) =>
+        acc + (if (number == '0') 0 else 1) * Math.pow(2, idx).toInt
+    }
+  }
+
+  private def getSeatId(
+    line: String,
+    parser: String => Int = Integer.parseInt(_, 2)
+  ): Int = {
     val m = PATTERN.findFirstMatchIn(line).get
     val rowStr = m
       .group(1)
@@ -24,7 +33,6 @@ object Day5 extends DayRunner[Int, Int] {
           '1'
         }
       })
-    val row = Integer.parseInt(rowStr, 2)
 
     val colStr = m
       .group(2)
@@ -35,21 +43,22 @@ object Day5 extends DayRunner[Int, Int] {
           '1'
         }
       })
-    val col = Integer.parseInt(colStr, 2)
 
-    (row, col)
+    Integer.parseInt(rowStr + colStr, 2)
   }
 
-  private def getSeatId(seat: (Int, Int)): Int = seat._1 * 8 + seat._2
+  def safeRunPart1(lines: Seq[String]): Int = {
+    if (false) {
+      lines.map(getSeatId(_, parseBinary)).max
+    }
 
-  def runPart1(lines: Seq[String]): IO[Int] = IO {
-    lines.map(getSeat(_)).map(getSeatId(_)).max
+    lines.map(getSeatId(_)).max
   }
 
-  def runPart2(lines: Seq[String]): IO[Int] = IO {
-    val seatIds = lines.map(getSeat(_)).map(getSeatId(_))
+  def safeRunPart2(lines: Seq[String]): Int = {
+    val seatIds = lines.map(getSeatId(_)).toSet
 
-    Range(1, getSeatId(MAX_ROW, MAX_COL) - 1)
+    Range(1, 8 * MAX_ROW + MAX_COL - 1)
       .find(id => {
         !seatIds.contains(id) && seatIds.contains(id - 1) && seatIds
           .contains(id + 1)
