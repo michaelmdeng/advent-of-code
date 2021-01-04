@@ -1,7 +1,9 @@
 package advent.y2020
 
+import cats.data.State
 import scala.annotation.tailrec
 
+import advent.shared.InputTransformer
 import advent.shared.SafeDayRunner
 
 sealed trait SeatType
@@ -9,27 +11,30 @@ case object Empty extends SeatType
 case object Occupied extends SeatType
 case object Floor extends SeatType
 
-// TODO: clean this up with {@link cats.data.State}
-object Day11 extends SafeDayRunner[String, Int, Int] {
+import Day11Implicits._
+
+object Day11Implicits {
+  type SeatRow = Seq[SeatType]
+  type SeatLayout = Seq[SeatRow]
+
+  implicit val input: InputTransformer[SeatRow] = s => {
+    s.map(seat => {
+      seat match {
+        case 'L' => Empty
+        case '#' => Occupied
+        case _ => Floor
+      }
+    })
+  }
+}
+
+object Day11 extends SafeDayRunner[SeatRow, Int, Int] {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 11
 
-  @tailrec
-  def transitionUntil(grid: Seq[Seq[SeatType]])(
-    transition: Seq[Seq[SeatType]] => (Seq[Seq[SeatType]], Int)
-  ): (Seq[Seq[SeatType]], Int) = {
-    val (next, count) = transition(grid)
-
-    if (count == 0) {
-      (next, grid.flatten.filter(_ == Occupied).length)
-    } else {
-      transitionUntil(next)(transition)
-    }
-  }
-
   private def extractState(
     gridChanges: Seq[Seq[(SeatType, Boolean)]]
-  ): (Seq[Seq[SeatType]], Int) = {
+  ): (SeatLayout, Int) = {
     (
       gridChanges.map(row => {
         row.map {
@@ -42,11 +47,45 @@ object Day11 extends SafeDayRunner[String, Int, Int] {
     )
   }
 
-  private def adjacentSeats(
-    rowIdx: Int,
-    colIdx: Int,
-    grid: Seq[Seq[SeatType]]
-  ): Seq[SeatType] = {
+  private def transition(
+    getNumOccupied: (SeatLayout, Int, Int) => Int,
+    getNextSeat: (SeatType, Int) => SeatType
+  ): State[SeatLayout, Int] =
+    State(grid => {
+      val gridChanges = grid.zipWithIndex.map {
+        case (row, rowIdx) => {
+          row.zipWithIndex.map {
+            case (seat, colIdx) => {
+              val curr = grid(rowIdx)(colIdx)
+              if (curr == Floor) {
+                (Floor, false)
+              } else {
+                val next =
+                  getNextSeat(curr, getNumOccupied(grid, rowIdx, colIdx))
+                (next, next != curr)
+              }
+            }
+          }
+        }
+      }
+
+      extractState(gridChanges)
+    })
+
+  private def transitionUntil(
+    transition: State[SeatLayout, Int]
+  ): State[SeatLayout, Int] =
+    State(grid => {
+      val (next, count) = transition.run(grid).value
+
+      if (count == 0) {
+        (next, grid.flatten.filter(_ == Occupied).length)
+      } else {
+        transitionUntil(transition).run(next).value
+      }
+    })
+
+  def numOccupiedPart1(grid: SeatLayout, rowIdx: Int, colIdx: Int): Int = {
     val rowSize = grid.length
     val colSize = grid(0).length
 
@@ -66,39 +105,24 @@ object Day11 extends SafeDayRunner[String, Int, Int] {
       .map {
         case (row, col) => grid(row)(col)
       }
+      .filter(_ == Occupied)
+      .length
   }
 
-  private def transition(
-    grid: Seq[Seq[SeatType]]
-  ): (Seq[Seq[SeatType]], Int) = {
-    val nextGrid = grid.zipWithIndex.map {
-      case (row, rowIdx) => {
-        row.zipWithIndex.map {
-          case (seat, colIdx) => {
-            val curr = grid(rowIdx)(colIdx)
-            if (curr == Floor) {
-              (Floor, false)
-            } else {
-              val numOccupied = adjacentSeats(rowIdx, colIdx, grid)
-                .filter(_ == Occupied)
-                .length
-
-              val next = if (numOccupied == 0) {
-                Occupied
-              } else if (numOccupied >= 4) {
-                Empty
-              } else {
-                curr
-              }
-
-              (next, next != curr)
-            }
-          }
-        }
-      }
+  def nextSeatPart1(seat: SeatType, numOccupied: Int): SeatType = {
+    if (numOccupied == 0) {
+      Occupied
+    } else if (numOccupied >= 4) {
+      Empty
+    } else {
+      seat
     }
+  }
 
-    extractState(nextGrid)
+  def safeRunPart1(grid: SeatLayout): Int = {
+    transitionUntil(transition(numOccupiedPart1, nextSeatPart1))
+      .runA(grid)
+      .value
   }
 
   private def directionIdxs(
@@ -125,11 +149,11 @@ object Day11 extends SafeDayRunner[String, Int, Int] {
       }
   }
 
-  private def closestAdjacentSeats(
+  private def numOccupiedPart2(
+    grid: SeatLayout,
     rowIdx: Int,
-    colIdx: Int,
-    grid: Seq[Seq[SeatType]]
-  ): Seq[SeatType] = {
+    colIdx: Int
+  ): Int = {
     val rowSize = grid.length
     val colSize = grid(0).length
 
@@ -156,71 +180,32 @@ object Day11 extends SafeDayRunner[String, Int, Int] {
       backwardLeftIdxs,
       backwardRightIdxs
     ).flatMap {
-      case direction =>
-        direction.find {
-          case (row, col) =>
-            grid(row)(col) == Occupied || grid(row)(col) == Empty
-        } match {
-          case Some((row, col)) => Seq(grid(row)(col))
-          case None => Seq()
-        }
-    }
-  }
-
-  private def transitionPart2(
-    grid: Seq[Seq[SeatType]]
-  ): (Seq[Seq[SeatType]], Int) = {
-    val nextGrid = grid.zipWithIndex.map {
-      case (row, rowIdx) => {
-        row.zipWithIndex.map {
-          case (seat, colIdx) => {
-            val curr = grid(rowIdx)(colIdx)
-            if (curr == Floor) {
-              (Floor, false)
-            } else {
-              val numOccupied = closestAdjacentSeats(
-                rowIdx,
-                colIdx,
-                grid
-              ).filter(_ == Occupied).length
-
-              val next = if (numOccupied == 0) {
-                Occupied
-              } else if (numOccupied >= 5) {
-                Empty
-              } else {
-                curr
-              }
-
-              (next, next != curr)
-            }
+        case direction =>
+          direction.find {
+            case (row, col) =>
+              grid(row)(col) == Occupied || grid(row)(col) == Empty
+          } match {
+            case Some((row, col)) => Seq(grid(row)(col))
+            case None => Seq()
           }
-        }
       }
+      .filter(_ == Occupied)
+      .length
+  }
+
+  def nextSeatPart2(seat: SeatType, numOccupied: Int): SeatType = {
+    if (numOccupied == 0) {
+      Occupied
+    } else if (numOccupied >= 5) {
+      Empty
+    } else {
+      seat
     }
-
-    extractState(nextGrid)
   }
 
-  private def readGrid(lines: Seq[String]): Seq[Seq[SeatType]] =
-    lines
-      .map(line => {
-        line.map(seat => {
-          seat match {
-            case 'L' => Empty
-            case '#' => Occupied
-            case _ => Floor
-          }
-        })
-      })
-
-  def safeRunPart1(lines: Seq[String]): Int = {
-    val (_, count) = transitionUntil(readGrid(lines))(transition)
-    count
-  }
-
-  def safeRunPart2(lines: Seq[String]): Int = {
-    val (_, count) = transitionUntil(readGrid(lines))(transitionPart2)
-    count
+  def safeRunPart2(grid: SeatLayout): Int = {
+    transitionUntil(transition(numOccupiedPart2, nextSeatPart2))
+      .runA(grid)
+      .value
   }
 }
