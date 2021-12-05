@@ -1,16 +1,9 @@
 package advent.y2020
 
-import cats.effect.IO
-
 import advent.shared.Algorithm
 import advent.shared.Day
 import advent.shared.InputTransformer
-
-import Day1Implicits._
-
-object Day1Implicits {
-  implicit val input: InputTransformer[Int] = s => s.toInt
-}
+import advent.shared.InputTransformer.implicits._
 
 object Day1Algorithms {
   private val SUM: Int = 2020
