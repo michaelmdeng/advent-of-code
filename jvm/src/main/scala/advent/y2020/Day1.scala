@@ -2,8 +2,9 @@ package advent.y2020
 
 import cats.effect.IO
 
+import advent.shared.Algorithm
+import advent.shared.Day
 import advent.shared.InputTransformer
-import advent.shared.SafeDayRunner
 
 import Day1Implicits._
 
@@ -11,10 +12,7 @@ object Day1Implicits {
   implicit val input: InputTransformer[Int] = s => s.toInt
 }
 
-object Day1 extends SafeDayRunner[Int, Int, Int] {
-  protected def YEAR: Int = 2020
-  protected def DAY: Int = 1
-
+object Day1Algorithms {
   private val SUM: Int = 2020
 
   private def part1BruteForce(entries: Seq[Int]): Int = {
@@ -42,13 +40,10 @@ object Day1 extends SafeDayRunner[Int, Int, Int] {
     }
   }
 
-  def safeRunPart1(entries: Seq[Int]): Int = {
-    if (false) {
-      part1BruteForce(entries)
-    }
-
-    part1Differences(entries)
-  }
+  val part1: Seq[Algorithm[Int, Int]] = Seq(
+    Algorithm.safe("brute force", part1BruteForce(_)),
+    Algorithm.safe("differences", part1Differences(_))
+  )
 
   private def part2BruteForce(entries: Seq[Int]): Int = {
     entries.tails
@@ -97,11 +92,16 @@ object Day1 extends SafeDayRunner[Int, Int, Int] {
     }
   }
 
-  def safeRunPart2(entries: Seq[Int]): Int = {
-    if (false) {
-      part2BruteForce(entries)
-    }
+  val part2: Seq[Algorithm[Int, Int]] = Seq(
+    Algorithm.safe("brute force", part2BruteForce(_)),
+    Algorithm.safe("differences", part2Differences(_))
+  )
+}
 
-    part2Differences(entries)
-  }
+object Day1
+    extends Day[Int, Int, Int](Day1Algorithms.part1, Day1Algorithms.part2) {
+  protected def YEAR: Int = 2020
+  protected def DAY: Int = 1
+
+  private val SUM: Int = 2020
 }

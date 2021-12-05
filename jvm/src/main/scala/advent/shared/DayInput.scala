@@ -4,6 +4,8 @@ import cats.effect.IO
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.InputStreamReader
+import java.nio.file.Files
+import java.nio.file.Paths
 
 trait DayInput {
   protected def YEAR: Int
@@ -30,5 +32,17 @@ trait DayInput {
 
   def readInput(): IO[Seq[String]] = readFile(filePath())
 
-  def readTestInput(): IO[Seq[String]] = readFile(testFilePath())
+  def readTestInput(): IO[Option[Seq[String]]] =
+    for {
+      fileExists <- exists(testFilePath())
+      readOutput <- if (fileExists) {
+        readFile(testFilePath()).map(Some(_))
+      } else {
+        IO.pure(None)
+      }
+    } yield (readOutput)
+
+  private def exists(file: String): IO[Boolean] = IO {
+    Files.exists(Paths.get(file))
+  }
 }
