@@ -5,7 +5,6 @@ import cats.effect.IO
 import advent.shared.Algorithm
 import advent.shared.Day
 import advent.shared.InputTransformer
-import advent.shared.SafeDayRunner
 
 import Day1Implicits._
 

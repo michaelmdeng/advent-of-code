@@ -2,12 +2,10 @@ package advent.y2020
 
 import scala.util.matching.Regex
 
-import advent.shared.SafeDayRunner
+import advent.shared.Algorithm
+import advent.shared.Day
 
-object Day2 extends SafeDayRunner[String, Int, Int] {
-  protected def YEAR: Int = 2020
-  protected def DAY: Int = 2
-
+object Day2Algorithms {
   private val PATTERN: Regex = new Regex("(\\d+)-(\\d+)\\s([a-z]):\\s([a-z]+)")
 
   def safeRunPart1(lines: Seq[String]): Int = {
@@ -26,6 +24,8 @@ object Day2 extends SafeDayRunner[String, Int, Int] {
       .length
   }
 
+  val part1 = Seq(Algorithm.safe("main", safeRunPart1(_)))
+
   def safeRunPart2(lines: Seq[String]): Int = {
     lines
       .filter(line => {
@@ -41,4 +41,11 @@ object Day2 extends SafeDayRunner[String, Int, Int] {
       })
       .length
   }
+
+  val part2 = Seq(Algorithm.safe("main", safeRunPart2(_)))
+}
+
+object Day2 extends Day[String, Int, Int](Day2Algorithms.part1, Day2Algorithms.part2) {
+  protected def YEAR: Int = 2020
+  protected def DAY: Int = 2
 }
