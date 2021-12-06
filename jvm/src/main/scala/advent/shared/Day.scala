@@ -1,13 +1,14 @@
 package advent.shared
 
 import cats.Functor
+import cats.NonEmptyParallel
 import cats.Show
 import cats.Traverse
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.IOApp
 import cats.syntax.functor._
-import cats.syntax.traverse._
+import cats.syntax.parallel._
 
 /* Runs an Advent of Code solution for a given day
  *
@@ -17,13 +18,15 @@ import cats.syntax.traverse._
  * G - Parametrized type for part 2 algorithms
  * B - Part 2 output type
  */
-abstract class Day[I: InputTransformer, F[_]: Functor: Traverse, A: Show, G[_]: Functor: Traverse, B: Show](
+abstract class Day[I: InputTransformer, F[_]: Functor: Traverse: NonEmptyParallel, A: Show, G[
+  _
+]: Functor: Traverse: NonEmptyParallel, B: Show](
   methods1: F[Algorithm[I, A]],
   methods2: G[Algorithm[I, B]]
 ) extends DayInput
     with IOApp {
 
-  private def runAlgorithms[I, F[_]: Functor: Traverse, O: Show](
+  private def runAlgorithms[I, F[_]: Functor: Traverse: NonEmptyParallel, O: Show](
     input: Seq[I],
     methods: F[Algorithm[I, O]]
   ): IO[Unit] =
@@ -39,7 +42,7 @@ abstract class Day[I: InputTransformer, F[_]: Functor: Traverse, A: Show, G[_]: 
             )
           } yield ()
         })
-        .sequence
+        .parSequence
     } yield ()
 
   private def runPart1(input: Seq[I]): IO[Unit] =
