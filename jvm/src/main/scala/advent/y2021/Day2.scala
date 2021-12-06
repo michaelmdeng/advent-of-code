@@ -6,9 +6,9 @@ import advent.shared.Algorithm
 import advent.shared.Day
 import advent.shared.InputTransformer
 
-import Day11Implicits._
+import Day2Implicits._
 
-object Day11Implicits {
+object Day2Implicits {
   implicit val input: InputTransformer[Day2Algorithms.Command] =
     Day2Algorithms.Command.parse(_)
 }
