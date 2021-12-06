@@ -8,62 +8,103 @@ import advent.shared.Day
 import advent.shared.InputTransformer
 import advent.shared.InputTransformer.implicits._
 
+import Day3Implicits._
+
+object Day3Implicits {
+  implicit val input: InputTransformer[List[Day3Algorithms.Bit]] =
+    new InputTransformer[List[Day3Algorithms.Bit]] {
+      def transformInput(line: String): List[Day3Algorithms.Bit] = {
+        line
+          .map(digit => {
+            digit.toString.toInt match {
+              case 1 => Day3Algorithms.One
+              case 0 => Day3Algorithms.Zero
+            }
+          })
+          .toList
+      }
+    }
+}
+
 object Day3Algorithms {
-  val part1: Algorithm[String, Int] = Algorithm.safe(
+  sealed trait Bit {
+    val flip: Bit
+
+    def toString(): String
+  }
+
+  object Bit {
+    def asInt(bits: Iterable[Bit]): Int =
+      Integer.parseInt(bits.map(_.toString).reduce(_ + _), 2)
+  }
+
+  case object One extends Bit {
+    val flip: Bit = Zero
+
+    override def toString(): String = "1"
+  }
+
+  case object Zero extends Bit {
+    val flip: Bit = One
+
+    override def toString(): String = "0"
+  }
+
+  private def mostCommon(bits: Iterable[Bit]): Bit = {
+    val oneBits = bits
+      .filter(bit => {
+        bit match {
+          case One => true
+          case Zero => false
+        }
+      })
+
+    if (2 * oneBits.size >= bits.size) {
+      One
+    } else {
+      Zero
+    }
+  }
+
+  val part1: Algorithm[List[Bit], Int] = Algorithm.safe(
     "default",
     readings => {
-      val numReadings = readings.size
-      val (gammaList, epsilonList) = readings
-        .map(reading => {
-          reading.map(_.toString.toInt).toList
-        })
-        .reduce((r1, r2) => {
-          (r1, r2).parMapN(_ + _)
-        })
-        .map(digit => {
-          val mostCommon = 2 * digit / numReadings
-          val leastCommon = 1 - mostCommon
-          (mostCommon, leastCommon)
-        })
-        .unzip
-      val gamma = Integer.parseInt(gammaList.map(_.toString).reduce(_ + _), 2)
-      val epsilon =
-        Integer.parseInt(epsilonList.map(_.toString).reduce(_ + _), 2)
+      val mostCommonBits = readings.transpose.map(mostCommon(_))
+      val gamma = Bit.asInt(mostCommonBits)
+      val epsilon = Bit.asInt(mostCommonBits.map(_.flip))
 
       gamma * epsilon
     }
   )
 
-  val part2: Algorithm[String, Int] = Algorithm.safe(
+  val part2: Algorithm[List[Bit], Int] = Algorithm.safe(
     "default",
     readings => {
       val numDigits = readings(0).size
 
-      val formattedReadings =
-        readings.map(reading => reading.map(_.toString.toInt))
       val oxygenList = Range(0, numDigits)
-        .foldLeft(formattedReadings)((acc, idx) => {
+        .foldLeft(readings)((acc, idx) => {
           if (acc.size == 1) {
             acc
           } else {
-            val mostCommon = 2 * acc.map(_(idx)).reduce(_ + _) / acc.size
-            acc.filter(_(idx) == mostCommon)
+            val mostCommonBit = mostCommon(acc.map(_(idx)))
+            acc.filter(_(idx) == mostCommonBit)
           }
         })
         .head
-      val oxygen = Integer.parseInt(oxygenList.map(_.toString).reduce(_ + _), 2)
+      val oxygen = Bit.asInt(oxygenList)
 
       val co2List = Range(0, numDigits)
-        .foldLeft(formattedReadings)((acc, idx) => {
+        .foldLeft(readings)((acc, idx) => {
           if (acc.size == 1) {
             acc
           } else {
-            val mostCommon = 2 * acc.map(_(idx)).reduce(_ + _) / acc.size
-            acc.filter(_(idx) != mostCommon)
+            val mostCommonBit = mostCommon(acc.map(_(idx)))
+            acc.filter(_(idx) != mostCommonBit)
           }
         })
         .head
-      val co2 = Integer.parseInt(co2List.map(_.toString).reduce(_ + _), 2)
+      val co2 = Bit.asInt(co2List)
 
       oxygen * co2
     }
@@ -71,7 +112,7 @@ object Day3Algorithms {
 }
 
 object Day3
-    extends Day[String, Id, Int, Id, Int](
+    extends Day[List[Day3Algorithms.Bit], Id, Int, Id, Int](
       Day3Algorithms.part1,
       Day3Algorithms.part2
     ) {
