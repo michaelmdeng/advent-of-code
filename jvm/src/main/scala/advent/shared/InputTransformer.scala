@@ -15,5 +15,7 @@ object InputTransformer {
   object implicits {
     implicit val inputTransformerForId: InputTransformer[String] =
       InputTransformer.id()
+
+    implicit val inputTransformerForInt: InputTransformer[Int] = s => s.toInt
   }
 }
