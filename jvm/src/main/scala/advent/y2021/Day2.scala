@@ -1,5 +1,7 @@
 package advent.y2021
 
+import cats.Id
+
 import advent.shared.Algorithm
 import advent.shared.Day
 import advent.shared.InputTransformer
@@ -29,7 +31,7 @@ object Day2Algorithms {
 
   }
 
-  val runPart1: Algorithm[Command, Int] = Algorithm.safe(
+  val part1: Algorithm[Command, Int] = Algorithm.safe(
     "default",
     commands => {
       val finalPos = commands.foldLeft((0, 0))((pos, command) => {
@@ -46,9 +48,7 @@ object Day2Algorithms {
     }
   )
 
-  val part1 = Seq(runPart1)
-
-  val runPart2: Algorithm[Command, Int] = Algorithm.safe(
+  val part2: Algorithm[Command, Int] = Algorithm.safe(
     "default",
     commands => {
       val finalPos = commands.foldLeft((0, 0, 0))((pos, command) => {
@@ -65,17 +65,13 @@ object Day2Algorithms {
       finalPos._1 * finalPos._2
     }
   )
-
-  val part2 = Seq(runPart2)
 }
 
 object Day2
-    extends Day[Day2Algorithms.Command, Int, Int](
+    extends Day[Day2Algorithms.Command, Id, Int, Id, Int](
       Day2Algorithms.part1,
       Day2Algorithms.part2
     ) {
   protected def YEAR: Int = 2021
   protected def DAY: Int = 2
-
-  private val SUM: Int = 2021
 }

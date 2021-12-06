@@ -1,8 +1,9 @@
 package advent.y2020
 
+import cats.Id
+
 import advent.shared.Algorithm
 import advent.shared.Day
-import advent.shared.SafeDayRunner
 
 object Day3Algorithms {
   private final val X_SLOPE_PT_1: Int = 3
@@ -24,25 +25,27 @@ object Day3Algorithms {
       .reduce(_ + _)
   }
 
-  def safeRunPart1(lines: Seq[String]): Int = {
-    countTrees(lines, X_SLOPE_PT_1, Y_SLOPE_PT_1)
-  }
+  def part1: Algorithm[String, Int] =
+    Algorithm.safe("default", lines => {
+      countTrees(lines, X_SLOPE_PT_1, Y_SLOPE_PT_1)
+    })
 
-  val part1 = Seq(Algorithm.safe("main", safeRunPart1))
-
-  def safeRunPart2(lines: Seq[String]): Long = {
-    List((1, 1), (3, 1), (5, 1), (7, 1), (1, 2))
-      .map {
-        case (xSlope, ySlope) => countTrees(lines, xSlope, ySlope)
-      }
-      .map(_.toLong)
-      .reduce(_ * _)
-  }
-
-  val part2 = Seq(Algorithm.safe("main", safeRunPart2))
+  def part2: Algorithm[String, Long] =
+    Algorithm.safe("default", lines => {
+      List((1, 1), (3, 1), (5, 1), (7, 1), (1, 2))
+        .map {
+          case (xSlope, ySlope) => countTrees(lines, xSlope, ySlope)
+        }
+        .map(_.toLong)
+        .reduce(_ * _)
+    })
 }
 
-object Day3 extends Day[String, Int, Long](Day3Algorithms.part1, Day3Algorithms.part2) {
+object Day3
+    extends Day[String, Id, Int, Id, Long](
+      Day3Algorithms.part1,
+      Day3Algorithms.part2
+    ) {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 3
 }

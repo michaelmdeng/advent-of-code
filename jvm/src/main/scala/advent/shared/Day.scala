@@ -1,20 +1,34 @@
 package advent.shared
 
+import cats.Functor
+import cats.NonEmptyParallel
 import cats.Show
+import cats.Traverse
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.IOApp
-import cats.implicits._
+import cats.syntax.functor._
+import cats.syntax.parallel._
 
-abstract class Day[I: InputTransformer, A: Show, B: Show](
-  methods1: Seq[Algorithm[I, A]],
-  methods2: Seq[Algorithm[I, B]]
+/* Runs an Advent of Code solution for a given day
+ *
+ * I - Input type
+ * F - Parametrized type for part 1 algorithms
+ * A - Part 1 output type
+ * G - Parametrized type for part 2 algorithms
+ * B - Part 2 output type
+ */
+abstract class Day[I: InputTransformer, F[_]: Functor: Traverse: NonEmptyParallel, A: Show, G[
+  _
+]: Functor: Traverse: NonEmptyParallel, B: Show](
+  methods1: F[Algorithm[I, A]],
+  methods2: G[Algorithm[I, B]]
 ) extends DayInput
     with IOApp {
 
-  private def runAlgorithms[I, O: Show](
+  private def runAlgorithms[I, F[_]: Functor: Traverse: NonEmptyParallel, O: Show](
     input: Seq[I],
-    methods: Seq[Algorithm[I, O]]
+    methods: F[Algorithm[I, O]]
   ): IO[Unit] =
     for {
       outputs <- methods
@@ -31,24 +45,25 @@ abstract class Day[I: InputTransformer, A: Show, B: Show](
         .parSequence
     } yield ()
 
-  def runPart1(input: Seq[I]): IO[Unit] =
+  private def runPart1(input: Seq[I]): IO[Unit] =
     for {
       _ <- IO(println("Running part 1"))
       _ <- runAlgorithms(input, methods1)
     } yield ()
 
-  def runPart2(input: Seq[I]): IO[Unit] =
+  private def runPart2(input: Seq[I]): IO[Unit] =
     for {
       _ <- IO(println("Running part 2"))
       _ <- runAlgorithms(input, methods2)
     } yield ()
 
-  def runParts(input: Seq[I]): IO[Unit] = for {
-    _ <- runPart1(input)
-    _ <- runPart2(input)
-  } yield ()
+  private def runParts(input: Seq[I]): IO[Unit] =
+    for {
+      _ <- runPart1(input)
+      _ <- runPart2(input)
+    } yield ()
 
-  def runTest(): IO[Unit] = {
+  private def runTest(): IO[Unit] = {
     val read = for {
       _ <- IO(println("Reading test data"))
       testInput <- readTestInput()
