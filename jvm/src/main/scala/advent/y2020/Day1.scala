@@ -33,7 +33,7 @@ object Day1Algorithms {
     }
   }
 
-  val part1: Seq[Algorithm[Int, Int]] = Seq(
+  val part1: List[Algorithm[Int, Int]] = List(
     Algorithm.safe("brute force", part1BruteForce(_)),
     Algorithm.safe("differences", part1Differences(_))
   )
@@ -85,16 +85,17 @@ object Day1Algorithms {
     }
   }
 
-  val part2: Seq[Algorithm[Int, Int]] = Seq(
+  val part2: List[Algorithm[Int, Int]] = List(
     Algorithm.safe("brute force", part2BruteForce(_)),
     Algorithm.safe("differences", part2Differences(_))
   )
 }
 
 object Day1
-    extends Day[Int, Int, Int](Day1Algorithms.part1, Day1Algorithms.part2) {
+    extends Day[Int, List, Int, List, Int](
+      Day1Algorithms.part1,
+      Day1Algorithms.part2
+    ) {
   protected def YEAR: Int = 2020
   protected def DAY: Int = 1
-
-  private val SUM: Int = 2020
 }
