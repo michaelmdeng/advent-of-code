@@ -6,9 +6,7 @@ class Day8(AdventDay):
     def __init__(self):
         AdventDay.__init__(self, 2022, 8)
 
-    def part_1(self):
-        input = self.input_data
-
+    def run_part_1(self, input):
         tree_grid = []
         for line in input:
             tree_grid.append(line.strip())
@@ -61,9 +59,11 @@ class Day8(AdventDay):
 
         return total_visible
 
-    def part_2(self):
+    def part_1(self):
         input = self.input_data
+        return self.run_part_1(input)
 
+    def run_part_2(self, input):
         tree_grid = []
         for line in input:
             tree_grid.append([int(c) for c in list(line.strip())])
@@ -74,6 +74,11 @@ class Day8(AdventDay):
                 scores[row_idx][col_idx] = self.scenic_score(row_idx, col_idx, tree_grid)
 
         return max([max(row) for row in scores])
+
+
+    def part_2(self):
+        input = self.input_data
+        return self.run_part_2(input)
 
     def scenic_score(self, row_idx, col_idx, tree_grid):
         curr_height = tree_grid[row_idx][col_idx]

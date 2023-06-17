@@ -26,6 +26,14 @@ class AdventDay:
     def input_data(self):
         return read_input(self.input_file)
 
+    @property
+    def example_input_file(self):
+        return f'{self.year}/day{self.day}-test.txt'
+
+    @property
+    def example_input_data(self):
+        return read_input(self.example_input_file)
+
 
 class AdventDayRunner:
     instance_cls = None
@@ -33,8 +41,47 @@ class AdventDayRunner:
     def setUp(self):
         self.instance = self.__class__.instance_cls()
 
+    def test_part_1_example(self):
+        runner = getattr(self.instance, 'run_part_1', None)
+        if not callable(runner):
+            return
+
+        result = runner(self.instance.example_input_data)
+
+        print(f'{self.__class__.instance_cls.__name__} Part 1 Example Result: {result}')
+
     def test_part_1(self):
-        print(f'{self.__class__.instance_cls.__name__} Part1 Result: {self.instance.part_1()}')
+        base_runner = getattr(self.instance, 'part_1', None)
+        runner = getattr(self.instance, 'run_part_1', None)
+        result = None
+        if callable(base_runner):
+            result = base_runner()
+        elif callable(runner):
+            result = runner(self.instance.input_data)
+        else:
+            return
+
+        print(f'{self.__class__.instance_cls.__name__} Part 1 Result: {result}')
+
+    def test_part_2_example(self):
+        runner = getattr(self.instance, 'run_part_2', None)
+        if not callable(runner):
+            return
+
+        result = runner(self.instance.example_input_data)
+
+        print(f'{self.__class__.instance_cls.__name__} Part 2 Example Result: {result}')
+
 
     def test_part_2(self):
-        print(f'{self.__class__.instance_cls.__name__} Part2 Result: {self.instance.part_2()}')
+        base_runner = getattr(self.instance, 'part_2', None)
+        runner = getattr(self.instance, 'run_part_2', None)
+        result = None
+        if callable(base_runner):
+            result = base_runner()
+        elif callable(runner):
+            result = runner(self.instance.input_data)
+        else:
+            return
+
+        print(f'{self.__class__.instance_cls.__name__} Part 2 Result: {result}')
