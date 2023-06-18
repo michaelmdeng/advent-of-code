@@ -5,8 +5,8 @@ import shared
 
 
 def parse_coord(line):
-    x = int(re.compile('^.*(?=,)').search(line).group())
-    y = int(re.compile('(?<=,\s).*$').search(line).group())
+    x = int(re.compile("^.*(?=,)").search(line).group())
+    y = int(re.compile("(?<=,\s).*$").search(line).group())
     return (x, y)
 
 
@@ -62,7 +62,7 @@ def min_area(coords):
 
 
 def main_1():
-    lines = shared.read_input('day6-input.txt')
+    lines = shared.read_input("day6-input.txt")
     coords = [parse_coord(line) for line in lines]
 
     a = {}
@@ -76,7 +76,7 @@ def main_1():
 
 
 def main_2():
-    lines = shared.read_input('day6-input.txt')
+    lines = shared.read_input("day6-input.txt")
     coords = [parse_coord(line) for line in lines]
 
     area = min_area(coords)

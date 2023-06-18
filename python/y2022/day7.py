@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from shared import AdventDay, AdventDayRunner
 
+
 class Day7(AdventDay):
     def __init__(self):
         AdventDay.__init__(self, 2022, 7)
@@ -12,7 +13,9 @@ class Day7(AdventDay):
             if d in dir_sizes:
                 dir_sum += dir_sizes[d]
             else:
-                dir_size = self.dir_size(dir_map, dir_sizes, dir_map[d][0], dir_map[d][1])
+                dir_size = self.dir_size(
+                    dir_map, dir_sizes, dir_map[d][0], dir_map[d][1]
+                )
                 dir_sum += dir_size
                 dir_sizes[d] = dir_size
 
@@ -24,7 +27,7 @@ class Day7(AdventDay):
         cmd_outputs = []
         cmd_output = []
         for line in input:
-            if line.strip().startswith('$'):
+            if line.strip().startswith("$"):
                 if cmd_output:
                     cmd_outputs.append(cmd_output)
                 cmd_output = [line.strip()]
@@ -34,33 +37,33 @@ class Day7(AdventDay):
         if cmd_output:
             cmd_outputs.append(cmd_output)
 
-        curr_dir = '/'
+        curr_dir = "/"
         dir_map = {}
         for cmd_output in cmd_outputs:
             cmd_line = cmd_output[0]
             parts = cmd_line.split()
-            if parts[1] == 'cd':
+            if parts[1] == "cd":
                 target = parts[2]
 
-                if target == '/':
-                    curr_dir = '/'
-                elif target == '..':
-                    parts = curr_dir.split('/')
-                    parent_parts = parts[:len(parts) - 2]
+                if target == "/":
+                    curr_dir = "/"
+                elif target == "..":
+                    parts = curr_dir.split("/")
+                    parent_parts = parts[: len(parts) - 2]
                     if len(parent_parts) <= 1:
-                        curr_dir = '/'
+                        curr_dir = "/"
                     else:
-                        curr_dir = '/'.join(parts[:len(parts) - 2]) + '/'
+                        curr_dir = "/".join(parts[: len(parts) - 2]) + "/"
                 else:
-                    curr_dir += target + '/'
+                    curr_dir += target + "/"
             else:
                 output = cmd_output[1:]
                 output_dirs = []
                 output_files = []
                 for output_line in output:
                     parts = output_line.split()
-                    if parts[0] == 'dir':
-                        output_dirs.append(curr_dir + parts[1] + '/')
+                    if parts[0] == "dir":
+                        output_dirs.append(curr_dir + parts[1] + "/")
                     else:
                         output_files.append(int(parts[0]))
                 dir_map[curr_dir] = (output_dirs, output_files)
@@ -74,7 +77,7 @@ class Day7(AdventDay):
             else:
                 dir_sizes[d] = self.dir_size(dir_map, dir_sizes, dirs, files)
 
-        return sum({ k:v for k, v in dir_sizes.items() if v <= 100000 }.values())
+        return sum({k: v for k, v in dir_sizes.items() if v <= 100000}.values())
 
     def part_2(self):
         input = self.input_data
@@ -82,7 +85,7 @@ class Day7(AdventDay):
         cmd_outputs = []
         cmd_output = []
         for line in input:
-            if line.strip().startswith('$'):
+            if line.strip().startswith("$"):
                 if cmd_output:
                     cmd_outputs.append(cmd_output)
                 cmd_output = [line.strip()]
@@ -92,33 +95,33 @@ class Day7(AdventDay):
         if cmd_output:
             cmd_outputs.append(cmd_output)
 
-        curr_dir = '/'
+        curr_dir = "/"
         dir_map = {}
         for cmd_output in cmd_outputs:
             cmd_line = cmd_output[0]
             parts = cmd_line.split()
-            if parts[1] == 'cd':
+            if parts[1] == "cd":
                 target = parts[2]
 
-                if target == '/':
-                    curr_dir = '/'
-                elif target == '..':
-                    parts = curr_dir.split('/')
-                    parent_parts = parts[:len(parts) - 2]
+                if target == "/":
+                    curr_dir = "/"
+                elif target == "..":
+                    parts = curr_dir.split("/")
+                    parent_parts = parts[: len(parts) - 2]
                     if len(parent_parts) <= 1:
-                        curr_dir = '/'
+                        curr_dir = "/"
                     else:
-                        curr_dir = '/'.join(parts[:len(parts) - 2]) + '/'
+                        curr_dir = "/".join(parts[: len(parts) - 2]) + "/"
                 else:
-                    curr_dir += target + '/'
+                    curr_dir += target + "/"
             else:
                 output = cmd_output[1:]
                 output_dirs = []
                 output_files = []
                 for output_line in output:
                     parts = output_line.split()
-                    if parts[0] == 'dir':
-                        output_dirs.append(curr_dir + parts[1] + '/')
+                    if parts[0] == "dir":
+                        output_dirs.append(curr_dir + parts[1] + "/")
                     else:
                         output_files.append(int(parts[0]))
                 dir_map[curr_dir] = (output_dirs, output_files)
@@ -132,13 +135,15 @@ class Day7(AdventDay):
             else:
                 dir_sizes[d] = self.dir_size(dir_map, dir_sizes, dirs, files)
 
-        used_space = dir_sizes['/']
+        used_space = dir_sizes["/"]
         total_space = 70000000
         unused_space = total_space - used_space
         needed_space = 30000000
         need_to_delete = needed_space - unused_space
-        possible_dirs = { k:v for k, v in dir_sizes.items() if v >= need_to_delete }
-        smallest_dir_delete = sorted(possible_dirs.keys(), key=lambda k: possible_dirs[k])[0]
+        possible_dirs = {k: v for k, v in dir_sizes.items() if v >= need_to_delete}
+        smallest_dir_delete = sorted(
+            possible_dirs.keys(), key=lambda k: possible_dirs[k]
+        )[0]
         return possible_dirs[smallest_dir_delete]
 
 

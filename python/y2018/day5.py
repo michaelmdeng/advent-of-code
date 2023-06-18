@@ -2,7 +2,7 @@ from unittest import skip, TestCase
 
 from shared import read_input
 
-INPUT_FILE_PATH = 'day5-input.txt'
+INPUT_FILE_PATH = "day5-input.txt"
 
 
 def process_reactions(chain):
@@ -22,7 +22,7 @@ def process_reactions(chain):
     if idx == (len(chain) - 1):
         polys.append(chain[idx])
 
-    return ''.join([poly for poly in polys])
+    return "".join([poly for poly in polys])
 
 
 def process_all(chain):
@@ -45,14 +45,16 @@ def remove_poly(chain, poly):
 
 def main():
     chain = read_input(INPUT_FILE_PATH)[0]
-    chain = chain[:len(chain) - 1]  # remove '\n'
+    chain = chain[: len(chain) - 1]  # remove '\n'
 
     new_chain = process_all(chain)
-    print('Part 1: ' + str(len(new_chain)))
+    print("Part 1: " + str(len(new_chain)))
 
-    lens = [len(process_all(remove_poly(chain, poly)))
-            for poly in 'abcdefghijklmnopqrstuvwyxz']
-    print('Part 2: ' + str(max(lens)))
+    lens = [
+        len(process_all(remove_poly(chain, poly)))
+        for poly in "abcdefghijklmnopqrstuvwyxz"
+    ]
+    print("Part 2: " + str(max(lens)))
 
 
 class Day5Tests(TestCase):

@@ -4,15 +4,15 @@ from unittest import TestCase
 from shared import read_input
 
 
-INPUT_FILE_PATH = 'day3-input.txt'
+INPUT_FILE_PATH = "day3-input.txt"
 
 
 class Rectangle:
     def __init__(self, x_off, y_off, x_wid, y_wid):
-        assert(x_off >= 0)
-        assert(y_off >= 0)
-        assert(x_wid >= 0)
-        assert(y_wid >= 0)
+        assert x_off >= 0
+        assert y_off >= 0
+        assert x_wid >= 0
+        assert y_wid >= 0
         self.x_off = x_off
         self.y_off = y_off
         self.x_wid = x_wid
@@ -28,19 +28,25 @@ class Rectangle:
         min_y_oth = other.y_off
         max_y_oth = other.y_off + other.y_wid - 1
 
-        return (max_x_oth >= min_x and max_x >= min_x_oth and
-                max_y_oth >= min_y and max_y >= min_y_oth)
+        return (
+            max_x_oth >= min_x
+            and max_x >= min_x_oth
+            and max_y_oth >= min_y
+            and max_y >= min_y_oth
+        )
 
     def __str__(self):
-        return 'Rect({}, {}, {}, {})'.format(self.x_off, self.y_off, self.x_wid, self.y_wid)
+        return "Rect({}, {}, {}, {})".format(
+            self.x_off, self.y_off, self.x_wid, self.y_wid
+        )
 
 
 def parse_claim(claim):
-    claim_id = int(re.compile('(?<=^#)\d+').search(claim).group())
-    x_off = int(re.compile('(?<=@\s)\d+').search(claim).group())
-    y_off = int(re.compile('(?<=,)\d+(?=:)').search(claim).group())
-    x_wid = int(re.compile('(?<=:\s)\d+(?=x)').search(claim).group())
-    y_wid = int(re.compile('(?<=x)\d+(?=$)').search(claim).group())
+    claim_id = int(re.compile("(?<=^#)\d+").search(claim).group())
+    x_off = int(re.compile("(?<=@\s)\d+").search(claim).group())
+    y_off = int(re.compile("(?<=,)\d+(?=:)").search(claim).group())
+    x_wid = int(re.compile("(?<=:\s)\d+(?=x)").search(claim).group())
+    y_wid = int(re.compile("(?<=x)\d+(?=$)").search(claim).group())
 
     return (claim_id, Rectangle(x_off, y_off, x_wid, y_wid))
 

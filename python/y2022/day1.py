@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from shared import AdventDay, AdventDayRunner
 
+
 class Day1(AdventDay):
     def __init__(self):
         AdventDay.__init__(self, 2022, 1)

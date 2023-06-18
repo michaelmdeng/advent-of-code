@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from shared import read_input
 
-INPUT_FILE_PATH = 'day1-input.txt'
+INPUT_FILE_PATH = "day1-input.txt"
 
 
 def parse_delta(delta):

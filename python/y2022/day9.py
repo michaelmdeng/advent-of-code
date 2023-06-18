@@ -4,8 +4,8 @@ from unittest import TestCase
 from shared import AdventDay, AdventDayRunner
 
 
-Point = namedtuple('Point', ['x', 'y'])
-Motion = namedtuple('Motion', ['direction', 'magnitude'])
+Point = namedtuple("Point", ["x", "y"])
+Motion = namedtuple("Motion", ["direction", "magnitude"])
 
 
 class Day9(AdventDay):
@@ -13,13 +13,13 @@ class Day9(AdventDay):
         AdventDay.__init__(self, 2022, 9)
 
     def move(self, head: Point, direction) -> Point:
-        if direction == 'L':
+        if direction == "L":
             return Point(head.x - 1, head.y)
-        elif direction == 'R':
+        elif direction == "R":
             return Point(head.x + 1, head.y)
-        elif direction == 'U':
+        elif direction == "U":
             return Point(head.x, head.y + 1)
-        elif direction == 'D':
+        elif direction == "D":
             return Point(head.x, head.y - 1)
 
     def adjacent(self, point1: Point, point2: Point) -> bool:
@@ -43,12 +43,11 @@ class Day9(AdventDay):
 
         return Point(new_x, new_y)
 
-
     def run_part_1(self, input):
         motions = []
         for line in input:
             dir, mag = line.strip().split()
-            motions.append(Motion(direction = dir, magnitude = int(mag)))
+            motions.append(Motion(direction=dir, magnitude=int(mag)))
 
         head = Point(0, 0)
         tail = Point(0, 0)
@@ -65,7 +64,7 @@ class Day9(AdventDay):
         motions = []
         for line in input:
             dir, mag = line.strip().split()
-            motions.append(Motion(direction = dir, magnitude = int(mag)))
+            motions.append(Motion(direction=dir, magnitude=int(mag)))
 
         head = Point(0, 0)
         num_tails = 9

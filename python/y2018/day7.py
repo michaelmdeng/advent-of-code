@@ -55,10 +55,14 @@ def adjacency(steps):
 def get_next_steps(adj, rev_adj, nodes, prev_steps=[], comp_steps=[], num_workers=5):
     roots = []
     for node in nodes:
-        if node not in rev_adj.keys() and node not in prev_steps and node not in comp_steps:
+        if (
+            node not in rev_adj.keys()
+            and node not in prev_steps
+            and node not in comp_steps
+        ):
             roots += [node]
 
-    return sorted(roots)[0:min(num_workers, len(roots))]
+    return sorted(roots)[0 : min(num_workers, len(roots))]
 
 
 def finish_steps(adj, rev_adj, nodes, steps):
@@ -74,7 +78,7 @@ def finish_steps(adj, rev_adj, nodes, steps):
         for remove in to_remove:
             rev_adj.pop(remove)
 
-    return(adj, rev_adj, nodes)
+    return (adj, rev_adj, nodes)
 
 
 def process_adj(adj, rev_adj, nodes, steps, int_steps=[], num_workers=1):
@@ -83,7 +87,7 @@ def process_adj(adj, rev_adj, nodes, steps, int_steps=[], num_workers=1):
         if node not in rev_adj.keys() and node not in steps and node not in int_steps:
             roots += [node]
 
-    roots = sorted(roots)[0:min(num_workers, len(roots))]
+    roots = sorted(roots)[0 : min(num_workers, len(roots))]
     for root in roots:
         if root in adj:
             adj.pop(root)
@@ -100,11 +104,11 @@ def process_adj(adj, rev_adj, nodes, steps, int_steps=[], num_workers=1):
 
 
 def get_time(step):
-    return ord(step) - ord('A') + 61
+    return ord(step) - ord("A") + 61
 
 
 def process_time(adj, rev_adj, nodes, num_workers):
-    """ A """
+    """A"""
     time = 0
     workers = [0 for idx in range(0, num_workers)]
     worker_steps = [None for idx in range(0, num_workers)]
@@ -113,10 +117,9 @@ def process_time(adj, rev_adj, nodes, num_workers):
     prog_steps = {}
     while True:
         curr_workers = len([True for worker in workers if worker == 0])
-        steps = get_next_steps(adj, rev_adj, nodes,
-                               prog_steps, comp_steps, num_workers)
+        steps = get_next_steps(adj, rev_adj, nodes, prog_steps, comp_steps, num_workers)
         worker_idxs = [idx for idx, v in enumerate(workers) if v == 0]
-        for (idx, step) in zip(worker_idxs, steps):
+        for idx, step in zip(worker_idxs, steps):
             workers[idx] = get_time(step)
             worker_steps[idx] = step
             prog_steps[step] = step
@@ -135,26 +138,30 @@ def process_time(adj, rev_adj, nodes, num_workers):
                     prog_steps.pop(worker_steps[idx])
                 comp_steps[worker_steps[idx]] = worker_steps[idx]
                 (adj, rev_adj, nodes) = finish_steps(
-                    adj, rev_adj, nodes, [worker_steps[idx]])
+                    adj, rev_adj, nodes, [worker_steps[idx]]
+                )
                 worker_steps[idx] = None
 
-        if len(adj.keys()) <= 0 and len(rev_adj.keys()) <= 0 and len([True for step in worker_steps if step]) <= 0:
+        if (
+            len(adj.keys()) <= 0
+            and len(rev_adj.keys()) <= 0
+            and len([True for step in worker_steps if step]) <= 0
+        ):
             break
     print(time)
 
 
 def main_1():
-    lines = shared.read_input('day7-input.txt')
+    lines = shared.read_input("day7-input.txt")
 
     steps = adjacency([parse_steps(line) for line in lines])
-    print(''.join(steps))
+    print("".join(steps))
 
 
 def main_2():
-    lines = shared.read_input('day7-input.txt')
+    lines = shared.read_input("day7-input.txt")
 
-    (adj, rev_adj, nodes) = build_adjacency(
-        [parse_steps(line) for line in lines])
+    (adj, rev_adj, nodes) = build_adjacency([parse_steps(line) for line in lines])
     process_time(adj, rev_adj, nodes, num_workers=5)
 
 

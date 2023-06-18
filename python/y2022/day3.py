@@ -3,15 +3,16 @@ from unittest import TestCase
 
 from shared import AdventDay, AdventDayRunner
 
+
 class Day3(AdventDay):
     def __init__(self):
         AdventDay.__init__(self, 2022, 3)
 
     def priority(self, item):
         if item.isupper():
-            return ord(item) - ord('A') + 27
+            return ord(item) - ord("A") + 27
         else:
-            return ord(item) - ord('a') + 1
+            return ord(item) - ord("a") + 1
 
     def part_1(self):
         input = self.input_data
@@ -19,8 +20,8 @@ class Day3(AdventDay):
         total = 0
         for line in input:
             rucksack = line.strip()
-            compartment1 = set(rucksack[:len(rucksack) // 2])
-            compartment2 = set(rucksack[len(rucksack) // 2:])
+            compartment1 = set(rucksack[: len(rucksack) // 2])
+            compartment2 = set(rucksack[len(rucksack) // 2 :])
 
             common = compartment1.intersection(compartment2)
             for item in common:

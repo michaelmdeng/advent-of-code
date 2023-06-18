@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from shared import AdventDay, AdventDayRunner
 
+
 class Day6(AdventDay):
     def __init__(self):
         AdventDay.__init__(self, 2022, 6)
@@ -10,7 +11,7 @@ class Day6(AdventDay):
         sequence = self.input_data[0].strip()
 
         for start_idx in range(0, len(sequence) - 4):
-            buffer = sequence[start_idx:start_idx + 4]
+            buffer = sequence[start_idx : start_idx + 4]
             if len(set(buffer)) == 4:
                 return start_idx + 4
 
@@ -20,7 +21,7 @@ class Day6(AdventDay):
         sequence = self.input_data[0].strip()
 
         for start_idx in range(0, len(sequence) - 14):
-            buffer = sequence[start_idx:start_idx + 14]
+            buffer = sequence[start_idx : start_idx + 14]
             if len(set(buffer)) == 14:
                 return start_idx + 14
 

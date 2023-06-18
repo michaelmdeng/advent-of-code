@@ -3,7 +3,7 @@ from unittest import TestCase
 from shared import read_input
 
 
-INPUT_FILE_PATH = 'day2-input.txt'
+INPUT_FILE_PATH = "day2-input.txt"
 
 
 def has_n_occurences(word, n):
@@ -23,16 +23,18 @@ def has_n_occurences(word, n):
 
 def string_dist(word1, word2):
     assert len(word1) == len(
-        word2), "Can only compare distance of strings of same length."
+        word2
+    ), "Can only compare distance of strings of same length."
 
     return len(word1) - len(common_string(word1, word2))
 
 
 def common_string(word1, word2):
     assert len(word1) == len(
-        word2), "Can only get common part of strings of same length"
+        word2
+    ), "Can only get common part of strings of same length"
 
-    common = ''
+    common = ""
     for idx in range(len(word1)):
         if word1[idx] == word2[idx]:
             common += word1[idx]
