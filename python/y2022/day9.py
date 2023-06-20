@@ -19,7 +19,7 @@ class Day9(AdventDay):
             return Point(head.x + 1, head.y)
         elif direction == "U":
             return Point(head.x, head.y + 1)
-        elif direction == "D":
+        else:  # direction == "D":
             return Point(head.x, head.y - 1)
 
     def adjacent(self, point1: Point, point2: Point) -> bool:
