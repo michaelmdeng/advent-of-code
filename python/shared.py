@@ -46,7 +46,8 @@ class AdventDay:
 
     @property
     def example_input_data(self):
-        return read_input(self.example_input_file)
+        if file_exists(self.example_input_file):
+            return read_input(self.example_input_file)
 
     @property
     def example_input_data_pt1(self):
@@ -61,8 +62,6 @@ class AdventDay:
 
 
 class AdventDayRunner:
-    instance_cls = None
-
     def setUp(self):
         self.instance = self.__class__.instance_cls()
 

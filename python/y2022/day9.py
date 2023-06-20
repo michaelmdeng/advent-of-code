@@ -79,8 +79,6 @@ class Day9(AdventDay):
                     tails[i] = tail
                     to_follow = tail
 
-                # if tails[-1] not in visited:
-                #     print(tails[-1])
                 visited[tails[-1]] = True
 
         return len(visited)
