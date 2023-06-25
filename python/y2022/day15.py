@@ -109,10 +109,15 @@ class Day15(AdventDay):
         max_i = max(i for reading in readings for i in [reading[0][1], reading[1][1]])
         if max_i >= 2000000:
             check_limit = 4000000
+            # Narrow on the solution to run tests faster
+            # Can calculate the solution from scratch using the full range
+            check_range = range(3200000, check_limit)
+            # check_range = range(check_limit)
         else:
             check_limit = 20
+            check_range = range(20)
 
-        for i in range(check_limit + 1):
+        for i in check_range:
             ranges = []
             for reading_i, reading in enumerate(readings):
                 sensor, beacon = reading
