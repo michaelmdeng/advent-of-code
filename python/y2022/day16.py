@@ -1,4 +1,5 @@
 from collections import deque, namedtuple
+import itertools
 import re
 from unittest import TestCase
 
@@ -35,7 +36,7 @@ class Day16(AdventDay):
         searched = {}
         traverse_map = {}
         for valve in scan_map:
-            if valve in searched:
+            if valve in searched or scan_map[valve].rate == 0:
                 continue
 
             curr_searched = {}
@@ -58,16 +59,17 @@ class Day16(AdventDay):
     def max_released(
         self,
         t: int,
+        max_t: int,
         curr: str,
         opened: dict[str, bool],
         scan_map: dict[str, ValveScan],
         traversal_map: dict[tuple[str, str], int],
     ):
-        if t > 30:
+        if t > max_t:
             return 0
 
         possible = {}
-        time_left = 31 - t
+        time_left = max_t + 1 - t
         for valve in scan_map:
             if valve in opened or scan_map[valve].rate == 0:
                 continue
@@ -88,6 +90,7 @@ class Day16(AdventDay):
             released, traverse_time = possible[next_valve]
             total_released = released + self.max_released(
                 t + traverse_time + 1,
+                max_t,
                 next_valve,
                 {**opened, next_valve: True},
                 scan_map,
@@ -103,10 +106,45 @@ class Day16(AdventDay):
 
         scan_map = {scan.name: scan for scan in scans}
         traversal_map = self.traverse(scan_map)
-        return self.max_released(1, "AA", {}, scan_map, traversal_map)
+        return self.max_released(1, 30, "AA", {}, scan_map, traversal_map)
 
-    def run_part_2(self, input) -> None:
-        pass
+    def run_part_2(self, input) -> int:
+        scans = self.parse_part_1(input)
+
+        scan_map = {scan.name: scan for scan in scans}
+        traversal_map = self.traverse(scan_map)
+        relevant_valves = [scan.name for scan in scans if scan.rate > 0]
+        relevant_valve_set = set(relevant_valves)
+
+        splits = []
+        for i in range(len(relevant_valves) // 2, len(relevant_valves) // 2 + 1):
+            self_combs = itertools.combinations(relevant_valves, i)
+            for combo in self_combs:
+                combo_set = set(combo)
+                eleph_set = relevant_valve_set.difference(combo_set)
+                splits.append((combo_set, eleph_set))
+
+        max_total_released = 0
+        for i, (self_valves, eleph_valves) in enumerate(splits):
+            self_scan_map = {
+                valve: valve_scan
+                for valve, valve_scan in scan_map.items()
+                if valve in self_valves
+            }
+            self_max = self.max_released(1, 26, "AA", {}, self_scan_map, traversal_map)
+            eleph_scan_map = {
+                valve: valve_scan
+                for valve, valve_scan in scan_map.items()
+                if valve in eleph_valves
+            }
+            eleph_max = self.max_released(
+                1, 26, "AA", {}, eleph_scan_map, traversal_map
+            )
+            total_released = self_max + eleph_max
+            if total_released > max_total_released:
+                max_total_released = total_released
+
+        return max_total_released
 
 
 class Day16Tests(AdventDayRunner, TestCase):
