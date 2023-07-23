@@ -53,6 +53,8 @@ class Day3(AdventDayV2):
 class Day3Tests(AdventDayV2.Tests):
     instance_cls = Day3
     EXPECTED = {
+        (1, True): 157,
         (1, False): 7793,
+        (2, True): 70,
         (2, False): 2499,
     }

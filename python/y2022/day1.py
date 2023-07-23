@@ -15,6 +15,9 @@ class Day1(AdventDayV2):
             else:
                 elf.append(int(line.strip()))
 
+        if elf:
+            elves.append(elf)
+
         return elves
 
     def run_part_1(self, elves):
@@ -30,6 +33,8 @@ class Day1(AdventDayV2):
 class Day1Tests(AdventDayV2.Tests):
     instance_cls = Day1
     EXPECTED = {
+        (1, True): 24000,
         (1, False): 67622,
+        (2, True): 45000,
         (2, False): 201491,
     }
