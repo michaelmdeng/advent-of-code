@@ -1,12 +1,11 @@
 from collections import namedtuple
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day10(AdventDay):
+class Day10(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 10)
+        super(Day10, self).__init__()
 
     def run_part_1(self, input) -> int:
         cycle = 1
@@ -81,5 +80,9 @@ class Day10(AdventDay):
         return screen, row
 
 
-class Day10Tests(AdventDayRunner, TestCase):
+class Day10Tests(AdventDayV2.Tests):
     instance_cls = Day10
+    EXPECTED = {
+        (1, True): 13140,
+        (1, False): 13520,
+    }

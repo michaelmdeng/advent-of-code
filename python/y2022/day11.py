@@ -2,9 +2,8 @@ from collections import deque
 from collections.abc import Callable
 from functools import reduce
 from itertools import filterfalse
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 MonkeyId = int
 WorryLevel = int
@@ -68,11 +67,11 @@ class Monkey:
         return out
 
 
-class Day11(AdventDay):
+class Day11(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 11)
+        super(Day11, self).__init__()
 
-    def parse_part_1(self, input: list[str]) -> list[Monkey]:
+    def parse_input(self, input: list[str]) -> list[Monkey]:
         groups: list[list[str]] = []
         group: list[str] = []
         for line in input:
@@ -132,7 +131,7 @@ class Day11(AdventDay):
         return Monkey(mid, items, op, divisor, divisible_monkey, undivisible_monkey)
 
     def run_part_1(self, input) -> int:
-        monkeys = self.parse_part_1(input)
+        monkeys = input
         monkey_dict = {}
         for monkey in monkeys:
             monkey_dict[monkey.mid] = monkey
@@ -150,7 +149,7 @@ class Day11(AdventDay):
         return inspections[0] * inspections[1]
 
     def run_part_2(self, input) -> int:
-        monkeys = self.parse_part_1(input)
+        monkeys = input
         monkey_dict = {}
         for monkey in monkeys:
             monkey_dict[monkey.mid] = monkey
@@ -174,5 +173,11 @@ class Day11(AdventDay):
         return inspections[0] * inspections[1]
 
 
-class Day11Tests(AdventDayRunner, TestCase):
+class Day11Tests(AdventDayV2.Tests):
     instance_cls = Day11
+    EXPECTED = {
+        (1, True): 10605,
+        (1, False): 110264,
+        (2, True): 2713310158,
+        (2, False): 23612457316,
+    }

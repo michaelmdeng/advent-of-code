@@ -1,12 +1,11 @@
 import itertools
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day3(AdventDay):
+class Day3(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 3)
+        super(Day3, self).__init__()
 
     def priority(self, item):
         if item.isupper():
@@ -14,9 +13,7 @@ class Day3(AdventDay):
         else:
             return ord(item) - ord("a") + 1
 
-    def part_1(self):
-        input = self.input_data
-
+    def run_part_1(self, input):
         total = 0
         for line in input:
             rucksack = line.strip()
@@ -32,9 +29,7 @@ class Day3(AdventDay):
 
         return total
 
-    def part_2(self):
-        input = self.input_data
-
+    def run_part_2(self, input):
         groups = []
         group = []
         for line in input:
@@ -50,12 +45,14 @@ class Day3(AdventDay):
             for badge in common:
                 break
 
-            print(common)
-
             total += self.priority(badge)
 
         return total
 
 
-class Day3Tests(AdventDayRunner, TestCase):
+class Day3Tests(AdventDayV2.Tests):
     instance_cls = Day3
+    EXPECTED = {
+        (1, False): 7793,
+        (2, False): 2499,
+    }

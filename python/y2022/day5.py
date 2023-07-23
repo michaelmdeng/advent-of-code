@@ -1,11 +1,9 @@
-from unittest import TestCase
-
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day5(AdventDay):
+class Day5(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 5)
+        super(Day5, self).__init__()
 
     def move(self, stacks, amt, frm, to):
         for _ in range(0, amt):
@@ -18,9 +16,7 @@ class Day5(AdventDay):
         stacks[frm - 1] = frm_stack[: len(frm_stack) - amt]
         stacks[to - 1] = stacks[to - 1] + to_move
 
-    def part_1(self):
-        input = self.input_data
-
+    def parse_input(self, input) -> tuple[list[str], list[str]]:
         layout_lines = []
         procedure_lines = []
         layout_done = False
@@ -31,6 +27,11 @@ class Day5(AdventDay):
                 layout_done = True
             else:
                 layout_lines.append(line)
+
+        return layout_lines, procedure_lines
+
+    def run_part_1(self, input):
+        layout_lines, procedure_lines = input
 
         layout_lines.reverse()
         num_stacks = max([int(idx) for idx in layout_lines[0].split()])
@@ -49,19 +50,8 @@ class Day5(AdventDay):
 
         return "".join([stack[len(stack) - 1] for stack in stacks])
 
-    def part_2(self):
-        input = self.input_data
-
-        layout_lines = []
-        procedure_lines = []
-        layout_done = False
-        for line in input:
-            if layout_done:
-                procedure_lines.append(line)
-            elif len(line.strip()) == 0:
-                layout_done = True
-            else:
-                layout_lines.append(line)
+    def run_part_2(self, input):
+        layout_lines, procedure_lines = input
 
         layout_lines.reverse()
         num_stacks = max([int(idx) for idx in layout_lines[0].split()])
@@ -81,5 +71,9 @@ class Day5(AdventDay):
         return "".join([stack[len(stack) - 1] for stack in stacks])
 
 
-class Day5Tests(AdventDayRunner, TestCase):
+class Day5Tests(AdventDayV2.Tests):
     instance_cls = Day5
+    EXPECTED = {
+        (1, False): "PSNRGBTFT",
+        (2, False): "BNTZFPMMW",
+    }

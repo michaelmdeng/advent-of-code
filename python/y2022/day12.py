@@ -1,13 +1,12 @@
 from collections import deque
 from typing import Union
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day12(AdventDay):
+class Day12(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 12)
+        super(Day12, self).__init__()
 
     def parse_input(
         self, input: list[str]
@@ -77,7 +76,7 @@ class Day12(AdventDay):
         return None
 
     def run_part_1(self, input) -> int:
-        grid, (start, end) = self.parse_input(input)
+        grid, (start, end) = input
         steps = self.min_steps(start, end, grid)
         if steps:
             return steps
@@ -85,7 +84,7 @@ class Day12(AdventDay):
             return -1
 
     def run_part_2(self, input) -> int:
-        grid, (start, end) = self.parse_input(input)
+        grid, (start, end) = input
         poss_starts = []
         for row_idx, row in enumerate(grid):
             for col_idx, height in enumerate(row):
@@ -101,5 +100,11 @@ class Day12(AdventDay):
         return min_steps
 
 
-class Day12Tests(AdventDayRunner, TestCase):
+class Day12Tests(AdventDayV2.Tests):
     instance_cls = Day12
+    EXPECTED = {
+        (1, True): 31,
+        (1, False): 468,
+        (2, True): 29,
+        (2, False): 459,
+    }

@@ -1,11 +1,9 @@
-from unittest import TestCase
-
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day4(AdventDay):
+class Day4(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 4)
+        super(Day4, self).__init__()
 
     def contains(self, assignment1, assignment2):
         return (
@@ -22,9 +20,7 @@ class Day4(AdventDay):
             assignment2[0] <= assignment1[1] and assignment2[1] >= assignment1[1]
         ) or (assignment1[0] <= assignment2[1] and assignment1[1] >= assignment2[1])
 
-    def part_1(self):
-        input = self.input_data
-
+    def run_part_1(self, input):
         count = 0
         for line in input:
             range1, range2 = line.strip().split(",")
@@ -36,9 +32,7 @@ class Day4(AdventDay):
 
         return count
 
-    def part_2(self):
-        input = self.input_data
-
+    def run_part_2(self, input):
         count = 0
         for line in input:
             range1, range2 = line.strip().split(",")
@@ -51,5 +45,9 @@ class Day4(AdventDay):
         return count
 
 
-class Day4Tests(AdventDayRunner, TestCase):
+class Day4Tests(AdventDayV2.Tests):
     instance_cls = Day4
+    EXPECTED = {
+        (1, False): 573,
+        (2, False): 867,
+    }

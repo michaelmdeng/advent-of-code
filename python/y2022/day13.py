@@ -1,13 +1,12 @@
 from functools import cmp_to_key
 from typing import Any
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day13(AdventDay):
+class Day13(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 13)
+        super(Day13, self).__init__()
 
     @staticmethod
     def compare(first, second) -> int:
@@ -117,5 +116,11 @@ class Day13(AdventDay):
         return divider_idxs[0] * divider_idxs[1]
 
 
-class Day13Tests(AdventDayRunner, TestCase):
+class Day13Tests(AdventDayV2.Tests):
     instance_cls = Day13
+    EXPECTED = {
+        (1, True): 13,
+        (1, False): 5390,
+        (2, True): 140,
+        (2, False): 19261,
+    }

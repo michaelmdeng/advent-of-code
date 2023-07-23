@@ -1,7 +1,6 @@
 from collections import deque
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 #  ####
 #
@@ -48,11 +47,11 @@ RockId = int
 Chamber = list[list[str]]
 
 
-class Day17(AdventDay):
+class Day17(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 17)
+        super(Day17, self).__init__()
 
-    def parse_part_1(self, input) -> list[str]:
+    def parse_input(self, input) -> list[str]:
         return list(input[0].strip())
 
     def get_rock(self, rock_idx: int) -> Rock:
@@ -226,7 +225,7 @@ class Day17(AdventDay):
         return highest
 
     def run_part_1(self, input) -> int:
-        jets = self.parse_part_1(input)
+        jets = input
         return self.simulate(jets, 2022)
 
     def run_part_2(self, input) -> None:
@@ -244,5 +243,6 @@ class Day17(AdventDay):
         # return self.simulate(jets, 2022)
 
 
-class Day17Tests(AdventDayRunner, TestCase):
+class Day17Tests(AdventDayV2.Tests):
     instance_cls = Day17
+    EXPECTED = {(1, True): 3068, (1, False): 3117}

@@ -1,12 +1,11 @@
 from typing import Optional
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day14(AdventDay):
+class Day14(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 14)
+        super(Day14, self).__init__()
 
     def fill(
         self, grid: list[list[str]], i_range: tuple[int, int], j_range: tuple[int, int]
@@ -162,5 +161,11 @@ class Day14(AdventDay):
         return fill_count
 
 
-class Day14Tests(AdventDayRunner, TestCase):
+class Day14Tests(AdventDayV2.Tests):
     instance_cls = Day14
+    EXPECTED = {
+        (1, True): 24,
+        (1, False): 672,
+        (2, True): 93,
+        (2, False): 26831,
+    }

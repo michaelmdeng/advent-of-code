@@ -1,17 +1,16 @@
 from collections import deque
 from collections import namedtuple
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 Point3 = namedtuple("Point3", ["x", "y", "z"])
 
 
-class Day18(AdventDay):
+class Day18(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 18)
+        super(Day18, self).__init__()
 
-    def parse_part_1(self, input) -> list[Point3]:
+    def parse_input(self, input) -> list[Point3]:
         points = []
         for line in input:
             x, y, z = line.strip().split(",")
@@ -60,11 +59,10 @@ class Day18(AdventDay):
         return sum(6 - adj for adj in point_adjacents)
 
     def run_part_1(self, input) -> int:
-        points = self.parse_part_1(input)
-        return self.surface_area(points)
+        return self.surface_area(input)
 
     def run_part_2(self, input) -> int:
-        points = self.parse_part_1(input)
+        points = input
         min_x, max_x = min(p.x for p in points), max(p.x for p in points)
         min_y, max_y = min(p.y for p in points), max(p.y for p in points)
         min_z, max_z = min(p.z for p in points), max(p.z for p in points)
@@ -120,5 +118,11 @@ class Day18(AdventDay):
         return self.surface_area(points)
 
 
-class Day18Tests(AdventDayRunner, TestCase):
+class Day18Tests(AdventDayV2.Tests):
     instance_cls = Day18
+    EXPECTED = {
+        (1, True): 64,
+        (1, False): 4242,
+        (2, True): 58,
+        (2, False): 2428,
+    }
