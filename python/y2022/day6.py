@@ -1,15 +1,15 @@
-from unittest import TestCase
-
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day6(AdventDay):
+class Day6(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 6)
+        super(Day6, self).__init__()
 
-    def part_1(self):
-        sequence = self.input_data[0].strip()
+    def parse_input(self, input) -> list[str]:
+        sequence = input[0].strip()
+        return sequence
 
+    def run_part_1(self, sequence):
         for start_idx in range(0, len(sequence) - 4):
             buffer = sequence[start_idx : start_idx + 4]
             if len(set(buffer)) == 4:
@@ -17,9 +17,7 @@ class Day6(AdventDay):
 
         return -1
 
-    def part_2(self):
-        sequence = self.input_data[0].strip()
-
+    def run_part_2(self, sequence):
         for start_idx in range(0, len(sequence) - 14):
             buffer = sequence[start_idx : start_idx + 14]
             if len(set(buffer)) == 14:
@@ -28,5 +26,9 @@ class Day6(AdventDay):
         return -1
 
 
-class Day6Tests(AdventDayRunner, TestCase):
+class Day6Tests(AdventDayV2.Tests):
     instance_cls = Day6
+    EXPECTED = {
+        (1, False): 1198,
+        (2, False): 3120,
+    }

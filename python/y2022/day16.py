@@ -1,19 +1,18 @@
 from collections import deque, namedtuple
 import itertools
 import re
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
 ValveScan = namedtuple("ValveScan", ["name", "rate", "connections"])
 
 
-class Day16(AdventDay):
+class Day16(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 16)
+        super(Day16, self).__init__()
 
-    def parse_part_1(self, input) -> list[ValveScan]:
+    def parse_input(self, input) -> list[ValveScan]:
         p = re.compile(
             r"Valve ([\w]{2}) has flow rate=(\d+); tunnels? leads? to valves? (.*)"
         )
@@ -102,14 +101,14 @@ class Day16(AdventDay):
         return max_released
 
     def run_part_1(self, input) -> int:
-        scans = self.parse_part_1(input)
+        scans = input
 
         scan_map = {scan.name: scan for scan in scans}
         traversal_map = self.traverse(scan_map)
         return self.max_released(1, 30, "AA", {}, scan_map, traversal_map)
 
     def run_part_2(self, input) -> int:
-        scans = self.parse_part_1(input)
+        scans = input
 
         scan_map = {scan.name: scan for scan in scans}
         traversal_map = self.traverse(scan_map)
@@ -147,5 +146,11 @@ class Day16(AdventDay):
         return max_total_released
 
 
-class Day16Tests(AdventDayRunner, TestCase):
+class Day16Tests(AdventDayV2.Tests):
     instance_cls = Day16
+    EXPECTED = {
+        (1, True): 1651,
+        (1, False): 1724,
+        (2, True): 1707,
+        (2, False): 2283,
+    }

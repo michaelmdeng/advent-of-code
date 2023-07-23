@@ -1,11 +1,9 @@
-from unittest import TestCase
-
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day8(AdventDay):
+class Day8(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 8)
+        super(Day8, self).__init__()
 
     def run_part_1(self, input):
         tree_grid = []
@@ -75,10 +73,6 @@ class Day8(AdventDay):
 
         return total_visible
 
-    def part_1(self):
-        input = self.input_data
-        return self.run_part_1(input)
-
     def run_part_2(self, input):
         tree_grid = []
         for line in input:
@@ -92,10 +86,6 @@ class Day8(AdventDay):
                 )
 
         return max([max(row) for row in scores])
-
-    def part_2(self):
-        input = self.input_data
-        return self.run_part_2(input)
 
     def scenic_score(self, row_idx, col_idx, tree_grid):
         curr_height = tree_grid[row_idx][col_idx]
@@ -127,5 +117,11 @@ class Day8(AdventDay):
         return seen_above * seen_below * seen_left * seen_right
 
 
-class Day8Tests(AdventDayRunner, TestCase):
+class Day8Tests(AdventDayV2.Tests):
     instance_cls = Day8
+    EXPECTED = {
+        (1, True): 21,
+        (1, False): 1543,
+        (2, True): 8,
+        (2, False): 595080,
+    }

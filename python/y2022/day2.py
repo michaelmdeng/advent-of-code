@@ -1,11 +1,9 @@
-from unittest import TestCase
-
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day2(AdventDay):
+class Day2(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 2)
+        super(Day2, self).__init__()
 
     # A B C - X Y Z - Rock Paper Scissors
     def score(self, abc, xyz):
@@ -56,8 +54,7 @@ class Day2(AdventDay):
             else:
                 return 1 + 6
 
-    def part_1(self):
-        input = self.input_data
+    def run_part_1(self, input):
         score = 0
         for line in input:
             abc, xyz = line.strip().split()
@@ -65,8 +62,7 @@ class Day2(AdventDay):
 
         return score
 
-    def part_2(self):
-        input = self.input_data
+    def run_part_2(self, input):
         score = 0
         for line in input:
             abc, xyz = line.strip().split()
@@ -75,5 +71,9 @@ class Day2(AdventDay):
         return score
 
 
-class Day2Tests(AdventDayRunner, TestCase):
+class Day2Tests(AdventDayV2.Tests):
     instance_cls = Day2
+    EXPECTED = {
+        (1, False): 14375,
+        (2, False): 10274,
+    }

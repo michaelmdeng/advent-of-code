@@ -1,14 +1,13 @@
 from collections import deque
 import re
 from typing import Optional
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day15(AdventDay):
+class Day15(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 15)
+        super(Day15, self).__init__()
 
     @staticmethod
     def mdist(pt1: tuple[int, int], pt2: tuple[int, int]) -> int:
@@ -136,5 +135,11 @@ class Day15(AdventDay):
         return 0
 
 
-class Day15Tests(AdventDayRunner, TestCase):
+class Day15Tests(AdventDayV2.Tests):
     instance_cls = Day15
+    EXPECTED = {
+        (1, True): 26,
+        (1, False): 4502208,
+        (2, True): 56000011,
+        (2, False): 13784551204480,
+    }

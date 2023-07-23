@@ -1,16 +1,15 @@
 from collections import namedtuple
-from unittest import TestCase
 
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
 Point = namedtuple("Point", ["x", "y"])
 Motion = namedtuple("Motion", ["direction", "magnitude"])
 
 
-class Day9(AdventDay):
+class Day9(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 9)
+        super(Day9, self).__init__()
 
     def move(self, head: Point, direction) -> Point:
         if direction == "L":
@@ -84,5 +83,11 @@ class Day9(AdventDay):
         return len(visited)
 
 
-class Day9Tests(AdventDayRunner, TestCase):
+class Day9Tests(AdventDayV2.Tests):
     instance_cls = Day9
+    EXPECTED = {
+        (1, True): 13,
+        (1, False): 6090,
+        (2, True): 36,
+        (2, False): 2566,
+    }

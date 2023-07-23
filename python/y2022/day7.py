@@ -1,11 +1,9 @@
-from unittest import TestCase
-
-from shared import AdventDay, AdventDayRunner
+from shared import AdventDayV2
 
 
-class Day7(AdventDay):
+class Day7(AdventDayV2):
     def __init__(self):
-        AdventDay.__init__(self, 2022, 7)
+        super(Day7, self).__init__()
 
     def dir_size(self, dir_map, dir_sizes, dirs, files):
         dir_sum = 0
@@ -21,9 +19,7 @@ class Day7(AdventDay):
 
         return dir_sum + sum(files)
 
-    def part_1(self):
-        input = self.input_data
-
+    def parse_input(self, input):
         cmd_outputs = []
         cmd_output = []
         for line in input:
@@ -37,6 +33,10 @@ class Day7(AdventDay):
         if cmd_output:
             cmd_outputs.append(cmd_output)
 
+        return cmd_outputs
+
+    def run_part_1(self, input):
+        cmd_outputs = input
         curr_dir = "/"
         dir_map = {}
         for cmd_output in cmd_outputs:
@@ -79,22 +79,8 @@ class Day7(AdventDay):
 
         return sum({k: v for k, v in dir_sizes.items() if v <= 100000}.values())
 
-    def part_2(self):
-        input = self.input_data
-
-        cmd_outputs = []
-        cmd_output = []
-        for line in input:
-            if line.strip().startswith("$"):
-                if cmd_output:
-                    cmd_outputs.append(cmd_output)
-                cmd_output = [line.strip()]
-            else:
-                cmd_output.append(line.strip())
-
-        if cmd_output:
-            cmd_outputs.append(cmd_output)
-
+    def run_part_2(self, input):
+        cmd_outputs = input
         curr_dir = "/"
         dir_map = {}
         for cmd_output in cmd_outputs:
@@ -147,5 +133,11 @@ class Day7(AdventDay):
         return possible_dirs[smallest_dir_delete]
 
 
-class Day6Tests(AdventDayRunner, TestCase):
+class Day7Tests(AdventDayV2.Tests):
     instance_cls = Day7
+    EXPECTED = {
+        (1, True): 95437,
+        (1, False): 1325919,
+        (2, True): 24933642,
+        (2, False): 2050735,
+    }
