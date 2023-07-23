@@ -29,6 +29,8 @@ class Day6(AdventDayV2):
 class Day6Tests(AdventDayV2.Tests):
     instance_cls = Day6
     EXPECTED = {
+        (1, True): 7,
         (1, False): 1198,
+        (2, True): 19,
         (2, False): 3120,
     }

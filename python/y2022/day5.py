@@ -74,6 +74,8 @@ class Day5(AdventDayV2):
 class Day5Tests(AdventDayV2.Tests):
     instance_cls = Day5
     EXPECTED = {
+        (1, True): "CMZ",
         (1, False): "PSNRGBTFT",
+        (2, True): "MCD",
         (2, False): "BNTZFPMMW",
     }
